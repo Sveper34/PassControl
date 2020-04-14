@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Учет пропусков</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">ОАСПУ БИТ</string>
+    <string name="nav_header_subtitle">40-63 Рябцев Семен</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Настройки</string>
+
+    <string name="menu_home">Учет пропусков</string>
+    <string name="menu_gallery">Состав пропуска</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="home_second">Home Second</string>
+</resources>
