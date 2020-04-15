@@ -32,10 +32,10 @@ public class MainActivity extends AppCompatActivity {
     public String type, barcode;
     public final static String BROADCAST_ACTION = "com.xcheng.scanner.action.BARCODE_DECODING_BROADCAST";
     DBHelper dbHelper = new DBHelper(this);
-    public SQLiteDatabase Database;
+    public static SQLiteDatabase Database;
     public NavController navController;
     public ConnectionToOracle synchronizationOracle;
-
+    public static Integer Idpass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
+        Idpass=1;
         br = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView tvfromTo = (TextView) findViewById(R.id.tvFromTo);
                 TextView tvAttendant = (TextView) findViewById(R.id.tvAttendant);
                 TextView tvcar = (TextView) findViewById(R.id.tvCar);
-                TextView tvIdpass = (TextView) findViewById(R.id.tvIdPass);
+
                 // Button btContent = (Button) findViewById(R.id.bOpenContent);
                 Cursor cursor = Database.rawQuery("select * from amp_pass where ampp_index='" + barcode.trim() + "'", null);
                 if (cursor.moveToNext()) {
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     tvfromTo.setText(cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")) + " / " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")));
                     tvAttendant.setText(cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")));
                     tvcar.setText(cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")));
-                    tvIdpass.setText(cursor.getString(cursor.getColumnIndex("ampp_id")));
+                    Idpass = cursor.getInt(cursor.getColumnIndex("ampp_id"));
                 } else {
                     tvNumberDate.setText("");
                     tvfromTo.setText("");
@@ -123,6 +123,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void bOpenContentOnClick(View view) {
+
         navController.navigate(R.id.action_nav_home_to_nav_Content);
+//
+//        ConstraintLayout cl=findViewById(R.id.fragmentContent);
+//        TextView tv=new TextView(this);
+//        tv.setText("Привет");
+//        cl.addView(tv);
+//        System.out.println("Привет");
     }
 }

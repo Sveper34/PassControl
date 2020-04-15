@@ -20,8 +20,7 @@
             <TableLayout
                 android:id="@+id/TableContent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#000000">
+                android:layout_height="match_parent">
 
                 <TableRow
                     android:id="@+id/trHead"
@@ -32,47 +31,37 @@
                         android:id="@+id/clIndex"
                         android:layout_width="62dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:background="#FFFFFF"
+                        android:layout_marginStart="5dp"
                         android:text="№ П/п" />
 
                     <TextView
                         android:id="@+id/clTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:background="#FFFFFF"
+                        android:layout_marginStart="5dp"
                         android:text="Наименование позиции" />
 
                     <TextView
                         android:id="@+id/clInventoryNumber"
-                        android:layout_width="wrap_content"
+                        android:layout_width="93dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:background="#FFFFFF"
+                        android:layout_marginStart="5dp"
                         android:text="Инв №" />
 
                     <TextView
                         android:id="@+id/clAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:background="#FFFFFF"
+                        android:layout_marginStart="5dp"
                         android:text="Кол-во" />
 
                     <TextView
                         android:id="@+id/clUnit"
                         android:layout_width="52dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:background="#FFFFFF"
+                        android:layout_marginStart="5dp"
                         android:text="Е.И" />
                 </TableRow>
-
-                <TableRow
-                    android:id="@+id/tr1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
 
             </TableLayout>
 
