@@ -8,6 +8,7 @@
     tools:context=".ui.Content.ContentFragment">
 
     <ScrollView
+        android:id="@+id/scrollView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -15,7 +16,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TableLayout
                 android:id="@+id/TableContent"
@@ -67,4 +69,23 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/btExport"
+        android:layout_width="164dp"
+        android:layout_height="44dp"
+        android:onClick="ButtonNotAplayOnClick"
+        android:text="Вывоз ТМЦ"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
+
+    <Button
+        android:id="@+id/btImport"
+        android:layout_width="166dp"
+        android:layout_height="47dp"
+        android:onClick="ButtonAplayOnClick"
+        android:text="Ввоз ТМЦ"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -38,10 +39,21 @@ public class ContentFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         //MainActivity.Idpass id последнего отсканированного пропуска
+        Button btImport = getView().findViewById(R.id.btImport);
+        Button btExport = getView().findViewById(R.id.btExport);
+        Cursor getInfoButton = MainActivity.Database.rawQuery("Select * from amp_pass where ampp_ID=" + MainActivity.Idpass + ";", null);
+        while (getInfoButton.moveToNext()) {
+            if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_PASSED_IN_CONTROL_POINT_ID")).equals(null))
+                btImport.setText("Ввоз ТМЦ");
+            else btImport.setText("Отменить ввоз ТМЦ");
+
+            if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID")).equals(null))
+                btExport.setText("Вывоз ТМЦ");
+            else btExport.setText("Отменить вывоз ТМЦ");
+        }
         TableLayout tl = (TableLayout) getView().findViewById(R.id.TableContent);
         Cursor cursor = MainActivity.Database.rawQuery("Select * from amp_pass_content where amppc_PASS_ID=" + MainActivity.Idpass + ";", null);
         while (cursor.moveToNext()) {
-
             //Создание строк
             TableRow tr = new TableRow(getActivity());
             TextView tvCell = new TextView(getActivity());
@@ -77,5 +89,26 @@ public class ContentFragment extends Fragment {
             tl.addView(tr);
         }
         // or  (ImageView) view.findViewById(R.id.foo);
+    }
+
+    public void ButtonImportOnClick(View view) {
+        Button bt = (Button) view;
+        Cursor cursor;
+        if (bt.getText() == "Ввоз ТМЦ") {
+            cursor = MainActivity.Database.rawQuery("update amp_pass set  where amppc_PASS_ID=" + MainActivity.Idpass + ";", null);
+        } else {
+            cursor = MainActivity.Database.rawQuery("update amp_pass set  where amppc_PASS_ID=" + MainActivity.Idpass + ";", null);
+        }
+
+    }
+
+    public void ButtonExportOnClick(View view) {
+        Button bt = (Button) view;
+        if (bt.getText() == "") {
+
+        } else {
+
+        }
+        Cursor cursor = MainActivity.Database.rawQuery("update amppp set ap=1 ", null);
     }
 }

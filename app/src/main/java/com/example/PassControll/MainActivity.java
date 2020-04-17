@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
@@ -94,12 +95,12 @@ public class MainActivity extends AppCompatActivity {
                 //Insert code for SQL Sync here
                 System.out.println("ХАЙ ХАЙ ХАЙ ХАЙ ХАЙ ЙХА ЙХА ЙХАЙХ А ТАЙМЕР");
                 synchronizationOracle.execute();//Класс для заполнения Внутренний бд
-                System.out.println("ХАЙ ХАЙ ХАЙ ХАЙ ХАЙ ЙХА ЙХА ЙХАЙХ А ТАЙМЕР");
+                //System.out.println("ХАЙ ХАЙ ХАЙ ХАЙ ХАЙ ЙХА ЙХА ЙХАЙХ А ТАЙМЕР");
 
             }
         };
         Timer tm = new Timer();
-        tm.schedule(tt, 600000);
+        tm.schedule(tt, 300000);
     }
 
     @Override
@@ -132,4 +133,5 @@ public class MainActivity extends AppCompatActivity {
 //        cl.addView(tv);
 //        System.out.println("Привет");
     }
+
 }
