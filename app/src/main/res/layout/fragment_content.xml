@@ -16,75 +16,85 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <TableLayout
-                android:id="@+id/TableContent"
+            <HorizontalScrollView
+                android:id="@+id/hscroll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TableRow
-                    android:id="@+id/trHead"
-                    android:layout_width="match_parent"
+                <TableLayout
+                    android:id="@+id/TableContent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/clIndex"
-                        android:layout_width="62dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="№ П/п" />
+                    <TableRow
+                        android:id="@+id/trHead"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/clTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="Наименование позиции" />
+                        <TextView
+                            android:id="@+id/clIndex"
+                            android:layout_width="62dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="№ П/п" />
 
-                    <TextView
-                        android:id="@+id/clInventoryNumber"
-                        android:layout_width="93dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="Инв №" />
+                        <TextView
+                            android:id="@+id/clTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="Наименование позиции" />
 
-                    <TextView
-                        android:id="@+id/clAmount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="Кол-во" />
+                        <TextView
+                            android:id="@+id/clInventoryNumber"
+                            android:layout_width="93dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="Инв №"
+                            android:textAlignment="center" />
 
-                    <TextView
-                        android:id="@+id/clUnit"
-                        android:layout_width="52dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="Е.И" />
-                </TableRow>
+                        <TextView
+                            android:id="@+id/clAmount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="Кол-во"
+                            android:textAlignment="center" />
 
-            </TableLayout>
+                        <TextView
+                            android:id="@+id/clUnit"
+                            android:layout_width="52dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="Е.И"
+                            android:textAlignment="center" />
+                    </TableRow>
+
+                </TableLayout>
+            </HorizontalScrollView>
 
         </LinearLayout>
     </ScrollView>
 
     <Button
         android:id="@+id/btExport"
-        android:layout_width="164dp"
+        android:layout_width="wrap_content"
         android:layout_height="44dp"
-        android:onClick="ButtonNotAplayOnClick"
+        android:onClick="ButtonExportOnClick"
         android:text="Вывоз ТМЦ"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
 
     <Button
         android:id="@+id/btImport"
-        android:layout_width="166dp"
+        android:layout_width="wrap_content"
         android:layout_height="47dp"
-        android:onClick="ButtonAplayOnClick"
+        android:onClick="ButtonImportOnClick"
         android:text="Ввоз ТМЦ"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
 

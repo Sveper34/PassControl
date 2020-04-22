@@ -41,13 +41,14 @@ public class ContentFragment extends Fragment {
         //MainActivity.Idpass id последнего отсканированного пропуска
         Button btImport = getView().findViewById(R.id.btImport);
         Button btExport = getView().findViewById(R.id.btExport);
+
         Cursor getInfoButton = MainActivity.Database.rawQuery("Select * from amp_pass where ampp_ID=" + MainActivity.Idpass + ";", null);
         while (getInfoButton.moveToNext()) {
-            if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_PASSED_IN_CONTROL_POINT_ID")).equals(null))
+            btImport.setText("Привет");
+            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_IN_CONTROL_POINT_ID")) <= 0)
                 btImport.setText("Ввоз ТМЦ");
             else btImport.setText("Отменить ввоз ТМЦ");
-
-            if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID")).equals(null))
+            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID")) <= 0)
                 btExport.setText("Вывоз ТМЦ");
             else btExport.setText("Отменить вывоз ТМЦ");
         }
@@ -58,7 +59,7 @@ public class ContentFragment extends Fragment {
             TableRow tr = new TableRow(getActivity());
             TextView tvCell = new TextView(getActivity());
             tvCell.setTextSize(18);
-            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_INDEX")));
             tr.addView(tvCell);
 
@@ -89,26 +90,5 @@ public class ContentFragment extends Fragment {
             tl.addView(tr);
         }
         // or  (ImageView) view.findViewById(R.id.foo);
-    }
-
-    public void ButtonImportOnClick(View view) {
-        Button bt = (Button) view;
-        Cursor cursor;
-        if (bt.getText() == "Ввоз ТМЦ") {
-            cursor = MainActivity.Database.rawQuery("update amp_pass set  where amppc_PASS_ID=" + MainActivity.Idpass + ";", null);
-        } else {
-            cursor = MainActivity.Database.rawQuery("update amp_pass set  where amppc_PASS_ID=" + MainActivity.Idpass + ";", null);
-        }
-
-    }
-
-    public void ButtonExportOnClick(View view) {
-        Button bt = (Button) view;
-        if (bt.getText() == "") {
-
-        } else {
-
-        }
-        Cursor cursor = MainActivity.Database.rawQuery("update amppp set ap=1 ", null);
     }
 }

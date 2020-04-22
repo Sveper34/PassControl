@@ -1,8 +1,16 @@
 package com.example.PassControll.DB;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.PassControll.MainActivity;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String Database_name = "amp";
@@ -92,5 +100,31 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists amp_pass");
         db.execSQL("drop table if exists amp_pass_content");
         db.execSQL("drop table if exists amp_watch");
+    }
+
+    public void UpdateAmpPassImport(SQLiteDatabase db, Boolean NeedNull) {
+        Date currentDate = new Date();// Форматирование времени как "день.месяц.год"
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        String dateText = dateFormat.format(currentDate);
+        //Обновление параметров в бд
+        ContentValues contentValues = new ContentValues();
+        if (NeedNull) contentValues.put("ampp_PASSED_IN_CONTROL_POINT_ID", -1);
+        else
+            contentValues.put("ampp_PASSED_IN_CONTROL_POINT_ID", 1);// добавить обращение к настройкам для получения фахты общества к которой привязан сканер
+        contentValues.put("ampp_PASSED_IN_DATE", dateFormat.format(currentDate));
+        db.update("amp_pass", contentValues, "ampp_id=" + MainActivity.Idpass, null);
+    }
+
+    public void UpdateAmpPassExport(SQLiteDatabase db, Boolean NeedNull) {
+        Date currentDate = new Date();// Форматирование времени как "день.месяц.год"
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        String dateText = dateFormat.format(currentDate);
+        //Обновление параметров в бд
+        ContentValues contentValues = new ContentValues();
+        if (NeedNull) contentValues.put("ampp_PASSED_OUT_CONTROL_POINT_ID", -1);
+        else
+            contentValues.put("ampp_PASSED_OUT_CONTROL_POINT_ID", 1);// добавить обращение к настройкам для получения фахты общества к которой привязан сканер
+        contentValues.put("ampp_PASSED_OUT_DATE", dateFormat.format(currentDate));
+        db.update("amp_pass", contentValues, "ampp_id=" + MainActivity.Idpass, null);
     }
 }

@@ -6,15 +6,20 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.PassControll.DB.ConnectionToOracle;
 import com.example.PassControll.DB.DBHelper;
 import com.google.android.material.navigation.NavigationView;
+
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -22,21 +27,28 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static android.os.BatteryManager.BATTERY_PLUGGED_AC;
+import static android.os.BatteryManager.BATTERY_PLUGGED_USB;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private AppBarConfiguration mAppBarConfiguration;
-    private BroadcastReceiver br;
+    private BroadcastReceiver brbarCode;
+    private BroadcastReceiver brCharge;
     public String type, barcode;
     public final static String BROADCAST_ACTION = "com.xcheng.scanner.action.BARCODE_DECODING_BROADCAST";
     DBHelper dbHelper = new DBHelper(this);
     public static SQLiteDatabase Database;
     public NavController navController;
     public ConnectionToOracle synchronizationOracle;
-    public static Integer Idpass;
+    public static Integer Idpass;//id пропуска
+    public boolean isCharging = false;// проверка на зарядку
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        Idpass=1;
-        br = new BroadcastReceiver() {
+        Idpass = 1;
+        brbarCode = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 type = intent.getStringExtra("EXTRA_BARCODE_DECODING_SYMBOLE");
@@ -84,11 +96,30 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Пропуск не найден", Toast.LENGTH_SHORT).show();
                 }
             }
-
-
         };
+        brCharge = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+                isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                        status == BatteryManager.BATTERY_STATUS_FULL;
+
+                int chargePlug = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+                boolean usbCharge = chargePlug == BATTERY_PLUGGED_USB;
+                boolean acCharge = chargePlug == BATTERY_PLUGGED_AC;
+                //Toast.makeText(MainActivity.this, "isCharging=" + isCharging + " usbCharge=" + usbCharge + " acCharge=" + acCharge, Toast.LENGTH_SHORT).show();
+                if (usbCharge & isCharging) {
+                    ConnectionToOracle OracleConnect=new ConnectionToOracle();
+                    OracleConnect.execute();
+                }
+            }
+        };
+        //Батарея
+        IntentFilter ifBattaryChanged = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(brCharge, ifBattaryChanged);
+        //Штрих Код
         IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
-        registerReceiver(br, intFilt);
+        registerReceiver(brbarCode, intFilt);
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
@@ -120,18 +151,28 @@ public class MainActivity extends AppCompatActivity {
     @Override // для выключения приложения
     protected void onStop() {
         MainActivity.super.onStop();
-        unregisterReceiver(br);
+        unregisterReceiver(brbarCode);
     }
 
     public void bOpenContentOnClick(View view) {
-
         navController.navigate(R.id.action_nav_home_to_nav_Content);
-//
-//        ConstraintLayout cl=findViewById(R.id.fragmentContent);
-//        TextView tv=new TextView(this);
-//        tv.setText("Привет");
-//        cl.addView(tv);
-//        System.out.println("Привет");
     }
 
+    public void ButtonImportOnClick(View view) {
+        Button bt = (Button) view;
+        bt = findViewById(R.id.btImport);
+        if (bt.getText().toString().equals("Ввоз ТМЦ"))
+            dbHelper.UpdateAmpPassImport(Database, false);
+        else dbHelper.UpdateAmpPassImport(Database, true);
+        navController.navigateUp();
+    }
+
+    public void ButtonExportOnClick(View view) {
+        Button bt = (Button) view;
+        bt = findViewById(R.id.btExport);
+        if (bt.getText().toString().equals("Вывоз ТМЦ"))
+            dbHelper.UpdateAmpPassExport(Database, false);
+        else dbHelper.UpdateAmpPassExport(Database, true);
+        navController.navigateUp();
+    }
 }
