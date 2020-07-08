@@ -11,40 +11,54 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.xml.transform.Result;
+
 public class ConnectionToOracle extends AsyncTask {
     public int port;
 
     @Override
     protected String doInBackground(Object[] objects) {
         String result = "";
-        if (port != 0) {
-            try {
-                Connection con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.42." + port + ":1522:orcl", "system", "123456789");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
+        try {
+                Connection con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.42.140:1522:orcl", "system", "123456789");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("select * from dual");
+                while(rs.next()){
+                    result=rs.getString("dummy");
+                }
                 con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
-                port = -1;
                 //return e.toString();
             }
-        }
-        if (port <= 0) {
-            for (int i = 1; i < 255; i++) {
-                try {
-                    Connection con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.42." + i + ":1522:test", "plan_emp3_test", "plan_emp3_test");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery("select * from dual");
-                    con.close();
-                    port = i;
-                    result = i + "";
-                    break;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    //return e.toString();
-                }
-            }
-        }
+//        if (port != 0) {
+//            try {
+//                Connection con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.42." + port + ":1522:orcl", "system", "123456789");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
+//                Statement stmt = con.createStatement();
+//                ResultSet rs = stmt.executeQuery("select * from dual");
+//                con.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//                port = -1;
+//                //return e.toString();
+//            }
+//        }
+//        if (port <= 0) {
+//            for (int i = 1; i < 255; i++) {
+//                try {
+//                    Connection con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.42." + i + ":1522:test", "plan_emp3_test", "plan_emp3_test");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
+//                    Statement stmt = con.createStatement();
+//                    ResultSet rs = stmt.executeQuery("select * from dual");
+//                    con.close();
+//                    port = i;
+//                    result = i + "";
+//                    break;
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                    //return e.toString();
+//                }
+//            }
+//        }
         return  result;
     }
 }

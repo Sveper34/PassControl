@@ -40,8 +40,7 @@ import static android.os.BatteryManager.BATTERY_PLUGGED_AC;
 import static android.os.BatteryManager.BATTERY_PLUGGED_USB;
 
 public class MainActivity extends AppCompatActivity {
-
-
+    //Приватные переменные
     private AppBarConfiguration mAppBarConfiguration;
     private BroadcastReceiver brbarCode;
     private BroadcastReceiver brCharge;
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Database = dbHelper.getWritableDatabase();
-        synchronizationOracle = new ConnectionToOracle();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         final NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
 //                type = intent.getStringExtra("EXTRA_BARCODE_DECODING_SYMBOLE");
 //                barcode = intent.getStringExtra("EXTRA_BARCODE_DECODING_DATA");
-                type = intent.getStringExtra("barcode_string");
+//                type = intent.getStringExtra("barcode_string");
                 barcode = intent.getStringExtra("barcode_string");
                 System.out.println(barcode);
                 TextView tvNumberDate = (TextView) findViewById(R.id.tvNumberDate);
@@ -106,58 +104,68 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-//        brCharge = new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(Context context, Intent intent) {
-//                int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-//                isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
-//                        status == BatteryManager.BATTERY_STATUS_FULL;
-//
-//                int chargePlug = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-//                boolean usbCharge = chargePlug == BATTERY_PLUGGED_USB;
-//                boolean acCharge = chargePlug == BATTERY_PLUGGED_AC;
-//                //Toast.makeText(MainActivity.this, "isCharging=" + isCharging + " usbCharge=" + usbCharge + " acCharge=" + acCharge, Toast.LENGTH_SHORT).show();
-//                if (usbCharge & isCharging) {
-//                    ConnectionToOracle OracleConnect = new ConnectionToOracle();
-//                    //OracleConnect.execute();
-//                    TextView tvNumberDate = (TextView) findViewById(R.id.tvNumberDate);
-//                    try {
-//                        tvNumberDate.setText(OracleConnect.get().toString());
-//                    } catch (ExecutionException e) {
-//                        e.printStackTrace();
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        };
-//        //Батарея
-//        IntentFilter ifBattaryChanged = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-//        registerReceiver(brCharge, ifBattaryChanged);
-//        //Штрих Код
-        IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
-        registerReceiver(brbarCode, intFilt);
-//        TimerTask tt = new TimerTask() {
-//            @Override
-//            public void run() {
-//                //Insert code for SQL Sync here
-//                //System.out.println("ХАЙ ХАЙ ХАЙ ХАЙ ХАЙ ЙХА ЙХА ЙХАЙХ А ТАЙМЕР");
-//
-//                synchronizationOracle.execute();//Класс для заполнения Внутренний бд
-//                //System.out.println("ХАЙ ХАЙ ХАЙ ХАЙ ХАЙ ЙХА ЙХА ЙХАЙХ А ТАЙМЕР");
-//                TextView tvfromTo = (TextView) findViewById(R.id.tvFromTo);
-//                try {
-//                    tvfromTo.setText(synchronizationOracle.get().toString());
-//                } catch (ExecutionException e) {
-//                    e.printStackTrace();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        };
-//        Timer tm = new Timer();
-//        tm.schedule(tt, 300000);
+        Thread th=new Thread(new Runnable() {
+            @Override
+            public void run() {
+        brCharge = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+                isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                        status == BatteryManager.BATTERY_STATUS_FULL;
+
+                int chargePlug = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+                boolean usbCharge = chargePlug == BATTERY_PLUGGED_USB;
+                boolean acCharge = chargePlug == BATTERY_PLUGGED_AC;
+                //Toast.makeText(MainActivity.this, "isCharging=" + isCharging + " usbCharge=" + usbCharge + " acCharge=" + acCharge, Toast.LENGTH_SHORT).show();
+                if (usbCharge & isCharging) {
+                    ConnectionToOracle OracleConnect = new ConnectionToOracle();
+                    OracleConnect.execute();
+                    //TextView tvNumberDate = (TextView) findViewById(R.id.tvNumberDate);
+                    try {
+                        Toast.makeText(MainActivity.this, OracleConnect.get().toString(), Toast.LENGTH_SHORT).show(); //tvNumberDate.setText(OracleConnect.get().toString());
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+                //Батарея
+                IntentFilter ifBattaryChanged = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+                registerReceiver(brCharge, ifBattaryChanged);
+                //Штрих Код
+                IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
+                registerReceiver(brbarCode, intFilt);
+                TimerTask tt = new TimerTask() {
+                    @Override
+                    public void run() {
+                        //Insert code for SQL Sync here
+                        //System.out.println("ХАЙ ХАЙ ХАЙ ХАЙ ХАЙ ЙХА ЙХА ЙХАЙХ А ТАЙМЕР");
+
+                        synchronizationOracle.execute();//Класс для заполнения Внутренний бд
+                        //System.out.println("ХАЙ ХАЙ ХАЙ ХАЙ ХАЙ ЙХА ЙХА ЙХАЙХ А ТАЙМЕР");
+                        TextView tvfromTo = (TextView) findViewById(R.id.tvFromTo);
+                        try {
+                            tvfromTo.setText(synchronizationOracle.get().toString());
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                };
+                Timer tm = new Timer();
+                tm.schedule(tt, 300000);
+            }
+        });
+        th.setDaemon(true);
+        th.setName("ThreadSyncronize");
+        th.start();
+
     }
 
     @Override
@@ -178,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         MainActivity.super.onStop();
         unregisterReceiver(brbarCode);
-        // unregisterReceiver(brCharge);
+         unregisterReceiver(brCharge);
     }
 
     public void bOpenContentOnClick(View view) {
