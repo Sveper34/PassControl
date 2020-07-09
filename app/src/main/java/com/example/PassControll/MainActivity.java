@@ -40,6 +40,7 @@ import static android.os.BatteryManager.BATTERY_PLUGGED_AC;
 import static android.os.BatteryManager.BATTERY_PLUGGED_USB;
 
 public class MainActivity extends AppCompatActivity {
+
     //Приватные переменные
     private AppBarConfiguration mAppBarConfiguration;
     private BroadcastReceiver brbarCode;
@@ -186,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         MainActivity.super.onStop();
         unregisterReceiver(brbarCode);
-         unregisterReceiver(brCharge);
+        unregisterReceiver(brCharge);
     }
 
     public void bOpenContentOnClick(View view) {
@@ -210,5 +211,7 @@ public class MainActivity extends AppCompatActivity {
         else dbHelper.UpdateAmpPassExport(Database, true);
         navController.navigateUp();
     }
+    public void buttonSettingsOnClick(View view){
 
+    }
 }

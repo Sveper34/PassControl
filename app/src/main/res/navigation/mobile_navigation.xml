@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_Content"
             app:destination="@id/nav_Content" />
+        <action
+            android:id="@+id/action_nav_home_to_settingsActivity"
+            app:destination="@id/settingsActivity" />
     </fragment>
 
     <fragment
@@ -20,5 +23,9 @@
         android:name="com.example.PassControll.ui.Content.ContentFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_content" />
+    <activity
+        android:id="@+id/settingsActivity"
+        android:name="com.example.PassControll.SettingsActivity"
+        android:label="SettingsActivity" />
 
 </navigation>
