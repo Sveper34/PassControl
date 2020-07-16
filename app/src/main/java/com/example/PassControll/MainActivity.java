@@ -6,21 +6,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.hardware.usb.UsbDevice;
-import android.hardware.usb.UsbManager;
-import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.PassControll.DB.ConnectionToOracle;
+import com.example.PassControll.DB.ConnectionToPostgreSQL;
 import com.example.PassControll.DB.DBHelper;
 import com.google.android.material.navigation.NavigationView;
 
@@ -32,11 +26,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
-import static android.os.BatteryManager.BATTERY_PLUGGED_AC;
 import static android.os.BatteryManager.BATTERY_PLUGGED_USB;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     DBHelper dbHelper = new DBHelper(this);
     public static SQLiteDatabase Database;
     public NavController navController;
-    public ConnectionToOracle synchronizationOracle;
+    public ConnectionToPostgreSQL synchronizationPostgresql;
     public static Integer Idpass;//id пропуска
     public boolean isCharging = false;// проверка на зарядку
 
@@ -66,14 +61,15 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         final NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_Content
+                R.id.nav_home, R.id.nav_Content, R.id.nav_settings
         )
                 .setDrawerLayout(drawer)
                 .build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        Idpass = 1;
+
+        //Сканирование Штрих кодов
         brbarCode = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -105,9 +101,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        Thread th=new Thread(new Runnable() {
-            @Override
-            public void run() {
         brCharge = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -117,14 +110,15 @@ public class MainActivity extends AppCompatActivity {
 
                 int chargePlug = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
                 boolean usbCharge = chargePlug == BATTERY_PLUGGED_USB;
-                boolean acCharge = chargePlug == BATTERY_PLUGGED_AC;
-                //Toast.makeText(MainActivity.this, "isCharging=" + isCharging + " usbCharge=" + usbCharge + " acCharge=" + acCharge, Toast.LENGTH_SHORT).show();
+
                 if (usbCharge & isCharging) {
-                    ConnectionToOracle OracleConnect = new ConnectionToOracle();
-                    OracleConnect.execute();
-                    //TextView tvNumberDate = (TextView) findViewById(R.id.tvNumberDate);
+                    synchronizationPostgresql=new ConnectionToPostgreSQL();
+                    synchronizationPostgresql.execute();
                     try {
-                        Toast.makeText(MainActivity.this, OracleConnect.get().toString(), Toast.LENGTH_SHORT).show(); //tvNumberDate.setText(OracleConnect.get().toString());
+                        String st = synchronizationPostgresql.get().toString();
+
+                            System.out.println(st);
+                        //  Toast.makeText(MainActivity.this, synchronizationPostgresql.get().toString(), Toast.LENGTH_SHORT).show();
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
@@ -134,39 +128,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-                //Батарея
-                IntentFilter ifBattaryChanged = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-                registerReceiver(brCharge, ifBattaryChanged);
-                //Штрих Код
-                IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
-                registerReceiver(brbarCode, intFilt);
-                TimerTask tt = new TimerTask() {
-                    @Override
-                    public void run() {
-                        //Insert code for SQL Sync here
-                        //System.out.println("ХАЙ ХАЙ ХАЙ ХАЙ ХАЙ ЙХА ЙХА ЙХАЙХ А ТАЙМЕР");
-
-                        synchronizationOracle.execute();//Класс для заполнения Внутренний бд
-                        //System.out.println("ХАЙ ХАЙ ХАЙ ХАЙ ХАЙ ЙХА ЙХА ЙХАЙХ А ТАЙМЕР");
-                        TextView tvfromTo = (TextView) findViewById(R.id.tvFromTo);
-                        try {
-                            tvfromTo.setText(synchronizationOracle.get().toString());
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                };
-                Timer tm = new Timer();
-                tm.schedule(tt, 300000);
-            }
-        });
-        th.setDaemon(true);
-        th.setName("ThreadSyncronize");
-        th.start();
-
+        IntentFilter ifBattaryChanged = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(brCharge, ifBattaryChanged);
+        //Штрих Код
+        IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
+        registerReceiver(brbarCode, intFilt);
     }
 
     @Override
@@ -211,7 +177,10 @@ public class MainActivity extends AppCompatActivity {
         else dbHelper.UpdateAmpPassExport(Database, true);
         navController.navigateUp();
     }
-    public void buttonSettingsOnClick(View view){
 
+    public void buttonSettingsOnClick(View view) {
+//        Intent inttent = new Intent(MainActivity.this, SettingsActivity.class);
+//        startActivity(inttent );
+        navController.navigate(R.id.action_nav_home_to_settingsActivity);
     }
 }

@@ -50,10 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "ampp_PASSED_IN_DATE date," + //дата пропуска ТМЦ через вахту на ввоз/внос;
                 "ampp_PASSED_OUT_CONTROL_POINT_ID integer," + //число, ID вахты, через которую вывезли/вынесли ТМЦ;
                 "ampp_PASSED_OUT_DATE date)"); //дата пропуска ТМЦ через вахту на вывоз/вынос;
-        db.execSQL("insert into amp_pass(ampp_id,ampp_INDEX,ampp_AGREED_DATE,ampp_PLACE_FROM,ampp_PLACE_TO,ampp_ATTENDANT_FIO,ampp_TRANSPORT_INFO)" +
-                " values(1,'2078690491543','13.04.20','Цех №6','ЭМП №1','Рябцев С.О.','Малиновая девятка');");
-        db.execSQL("insert into amp_pass(ampp_id,ampp_INDEX,ampp_AGREED_DATE,ampp_PLACE_FROM,ampp_PLACE_TO,ampp_ATTENDANT_FIO,ampp_TRANSPORT_INFO) " +
-                "values(2,'201812100052','12.04.20','Цех №1','ЭМП №6','Соснин С.А.','volkswagen tiguan м279кр29рус');");
+
         //состав пропуска
         db.execSQL("create table amp_pass_content(amppc_id integer primary key," + //число, ID позиции пропуска в БД;
                 "amppc_SYNC_DATETIME date, " + //дата и время последней синхронизации;
@@ -63,30 +60,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "amppc_INVENTORY_NUMBER text," + //текст, инв. №;
                 "amppc_AMOUNT float," + //нецелое число, количество;
                 "amppc_UNIT text)"); //текст, краткое наименование единицы измерения.
-        db.execSQL("insert into amp_pass_content(amppc_id,amppc_SYNC_DATETIME,amppc_PASS_ID,amppc_INDEX,amppc_TITLE,amppc_INVENTORY_NUMBER,amppc_AMOUNT,amppc_UNIT) " +
-                "values(1,'14/04/2020',1,'1','Ложка','00001312',10,'шт')");
-        db.execSQL("insert into amp_pass_content(amppc_id,amppc_SYNC_DATETIME,amppc_PASS_ID,amppc_INDEX,amppc_TITLE,amppc_INVENTORY_NUMBER,amppc_AMOUNT,amppc_UNIT) " +
-                "values(2,'14/04/2020',1,'2','Цемент','00001313',10,'т')");
-        db.execSQL("insert into amp_pass_content(amppc_id,amppc_SYNC_DATETIME,amppc_PASS_ID,amppc_INDEX,amppc_TITLE,amppc_INVENTORY_NUMBER,amppc_AMOUNT,amppc_UNIT) " +
-                "values(3,'14/04/2020',1,'3','Щит пиротехника','00011312',100,'шт')");
-        db.execSQL("insert into amp_pass_content(amppc_id,amppc_SYNC_DATETIME,amppc_PASS_ID,amppc_INDEX,amppc_TITLE,amppc_INVENTORY_NUMBER,amppc_AMOUNT,amppc_UNIT) " +
-                "values(4,'14/04/2020',1,'4','Стакан','00002312',10,'шт')");
-        db.execSQL("insert into amp_pass_content(amppc_id,amppc_SYNC_DATETIME,amppc_PASS_ID,amppc_INDEX,amppc_TITLE,amppc_INVENTORY_NUMBER,amppc_AMOUNT,amppc_UNIT) " +
-                "values(5,'14/04/2020',1,'5','Тумбочка','00121312',1,'шт')");
-        db.execSQL("insert into amp_pass_content(amppc_id,amppc_SYNC_DATETIME,amppc_PASS_ID,amppc_INDEX,amppc_TITLE,amppc_INVENTORY_NUMBER,amppc_AMOUNT,amppc_UNIT) " +
-                "values(6,'14/04/2020',1,'6','Стул','00111312',10,'шт')");
-        db.execSQL("insert into amp_pass_content(amppc_id,amppc_SYNC_DATETIME,amppc_PASS_ID,amppc_INDEX,amppc_TITLE,amppc_INVENTORY_NUMBER,amppc_AMOUNT,amppc_UNIT) " +
-                "values(7,'14/04/2020',2,'1','Бантик','00001312',10,'шт')");
-        db.execSQL("insert into amp_pass_content(amppc_id,amppc_SYNC_DATETIME,amppc_PASS_ID,amppc_INDEX,amppc_TITLE,amppc_INVENTORY_NUMBER,amppc_AMOUNT,amppc_UNIT) " +
-                "values(8,'14/04/2020',2,'2','Песок','00001313',10,'т')");
-        db.execSQL("insert into amp_pass_content(amppc_id,amppc_SYNC_DATETIME,amppc_PASS_ID,amppc_INDEX,amppc_TITLE,amppc_INVENTORY_NUMBER,amppc_AMOUNT,amppc_UNIT) " +
-                "values(9,'14/04/2020',2,'3','Танк Т-34','00011312',1,'шт')");
-        db.execSQL("insert into amp_pass_content(amppc_id,amppc_SYNC_DATETIME,amppc_PASS_ID,amppc_INDEX,amppc_TITLE,amppc_INVENTORY_NUMBER,amppc_AMOUNT,amppc_UNIT) " +
-                "values(10,'14/04/2020',2,'4','Бронебойный снаряд','00002312',10,'шт')");
-        db.execSQL("insert into amp_pass_content(amppc_id,amppc_SYNC_DATETIME,amppc_PASS_ID,amppc_INDEX,amppc_TITLE,amppc_INVENTORY_NUMBER,amppc_AMOUNT,amppc_UNIT) " +
-                "values(11,'14/04/2020',2,'5','Фугасный снаряд','00121312',5,'шт')");
-        db.execSQL("insert into amp_pass_content(amppc_id,amppc_SYNC_DATETIME,amppc_PASS_ID,amppc_INDEX,amppc_TITLE,amppc_INVENTORY_NUMBER,amppc_AMOUNT,amppc_UNIT) " +
-                "values(12,'14/04/2020',2,'6','Зажигательный снаряд','00111312',10,'шт')");
+
         //вахты
         db.execSQL("create table amp_watch(ampw_ID integer primary key," + //число, код записи в справочнике вахт Общества;
                 "ampw_SHORT_TITLE text," +// - текст, краткое наименование вахты;
@@ -126,5 +100,12 @@ public class DBHelper extends SQLiteOpenHelper {
             contentValues.put("ampp_PASSED_OUT_CONTROL_POINT_ID", 1);// добавить обращение к настройкам для получения фахты общества к которой привязан сканер
         contentValues.put("ampp_PASSED_OUT_DATE", dateFormat.format(currentDate));
         db.update("amp_pass", contentValues, "ampp_id=" + MainActivity.Idpass, null);
+    }
+
+    public void DropAllTable(SQLiteDatabase db) {
+        db.execSQL("drop table if exists amp_car");
+        db.execSQL("drop table if exists amp_pass");
+        db.execSQL("drop table if exists amp_pass_content");
+        db.execSQL("drop table if exists amp_watch");
     }
 }

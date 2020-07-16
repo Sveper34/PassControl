@@ -1,2 +1,2 @@
 rootProject.name='Учет пропусков'
-include ':app', ':ojdbc6'
+include ':app'
