@@ -102,10 +102,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.update("amp_pass", contentValues, "ampp_id=" + MainActivity.Idpass, null);
     }
 
-    public void DropAllTable(SQLiteDatabase db) {
-        db.execSQL("drop table if exists amp_car");
-        db.execSQL("drop table if exists amp_pass");
-        db.execSQL("drop table if exists amp_pass_content");
-        db.execSQL("drop table if exists amp_watch");
+    public void SyncDatabase(SQLiteDatabase db, String sqlScript) {
+        db.execSQL(sqlScript);
     }
 }

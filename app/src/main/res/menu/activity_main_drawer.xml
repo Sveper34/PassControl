@@ -17,5 +17,9 @@
             android:id="@+id/nav_settings"
             android:icon="@android:drawable/ic_menu_manage"
             android:title="@string/nav_settings" />
+        <item
+            android:id="@+id/nav_AllPasses"
+            android:icon="?attr/actionModeCopyDrawable"
+            android:title="@string/nav_AllPasses" />
     </group>
 </menu>

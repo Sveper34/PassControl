@@ -15,7 +15,10 @@
             app:destination="@id/nav_Content" />
         <action
             android:id="@+id/action_nav_home_to_settingsActivity"
-            app:destination="@id/settingsActivity" />
+            app:destination="@id/nav_settingsActivity" />
+        <action
+            android:id="@+id/action_nav_home_to_allPassesContentFragment"
+            app:destination="@id/nav_allPassesContentFragment" />
     </fragment>
 
     <fragment
@@ -25,11 +28,21 @@
         tools:layout="@layout/fragment_content" >
         <action
             android:id="@+id/action_nav_Content_to_settingsActivity"
-            app:destination="@id/settingsActivity" />
+            app:destination="@id/nav_settingsActivity" />
     </fragment>
     <activity
-        android:id="@+id/settingsActivity"
+        android:id="@+id/nav_settingsActivity"
         android:name="com.example.PassControll.SettingsActivity"
-        android:label="SettingsActivity" />
+        android:label="SettingsActivity"
+        tools:layout="@layout/settings_activity" />
+    <fragment
+        android:id="@+id/nav_allPassesContentFragment"
+        android:name="com.example.PassControll.AllPassesActivity.AllPassesContentFragment"
+        android:label="AllPassesContentFragment" >
+        tools:layout="@layout/allPassesContentFragment"
+        <action
+            android:id="@+id/action_allPassesContentFragment_to_settingsActivity"
+            app:destination="@id/nav_settingsActivity" />
+    </fragment>
 
 </navigation>

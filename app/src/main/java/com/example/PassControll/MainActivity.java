@@ -13,11 +13,9 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.PassControll.DB.ConnectionToPostgreSQL;
 import com.example.PassControll.DB.DBHelper;
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,11 +23,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 import static android.os.BatteryManager.BATTERY_PLUGGED_USB;
@@ -61,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         final NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_Content, R.id.nav_settings
+                R.id.nav_home, R.id.nav_Content, R.id.nav_settingsActivity,R.id.nav_allPassesContentFragment
         )
                 .setDrawerLayout(drawer)
                 .build();
@@ -77,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 //                barcode = intent.getStringExtra("EXTRA_BARCODE_DECODING_DATA");
 //                type = intent.getStringExtra("barcode_string");
                 barcode = intent.getStringExtra("barcode_string");
-                System.out.println(barcode);
+//                System.out.println(barcode);
                 TextView tvNumberDate = (TextView) findViewById(R.id.tvNumberDate);
                 TextView tvfromTo = (TextView) findViewById(R.id.tvFromTo);
                 TextView tvAttendant = (TextView) findViewById(R.id.tvAttendant);
@@ -87,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 // Button btContent = (Button) findViewById(R.id.bOpenContent);
                 Cursor cursor = Database.rawQuery("select * from amp_pass where ampp_index='" + barcode.trim() + "'", null);
                 if (cursor.moveToNext()) {
-                    tvNumberDate.setText(cursor.getString(cursor.getColumnIndex("ampp_INDEX")) + " / " + cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE")));
+                    tvNumberDate.setText("Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX")) + " от " + cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE")));
                     tvfromTo.setText(cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")) + " / " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")));
                     tvAttendant.setText(cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")));
                     tvcar.setText(cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")));
@@ -112,16 +107,28 @@ public class MainActivity extends AppCompatActivity {
                 boolean usbCharge = chargePlug == BATTERY_PLUGGED_USB;
 
                 if (usbCharge & isCharging) {
-                    synchronizationPostgresql=new ConnectionToPostgreSQL();
+                    synchronizationPostgresql = new ConnectionToPostgreSQL();
                     synchronizationPostgresql.execute();
                     try {
-                        String st = synchronizationPostgresql.get().toString();
-
-                            System.out.println(st);
+                        ResultSet RsListPasses = (ResultSet) synchronizationPostgresql.get();
+//                        System.out.println(st);
+                        if (RsListPasses != null) {
+                            dbHelper.SyncDatabase(Database, "delete from amp_pass;");
+                            while (RsListPasses.next()) {
+                                dbHelper.SyncDatabase(Database, "insert into amp_pass(ampp_id,ampp_INDEX,ampp_CREATE_USER_FIO,ampp_AGREED_DATE,ampp_PLACE_FROM,ampp_PLACE_TO,ampp_ATTENDANT_FIO,ampp_TRANSPORT_INFO)" +
+                                        "values(" + RsListPasses.getString("id") + ",'" + RsListPasses.getString("pass_number") + "'," +
+                                        "'" + RsListPasses.getString("pass_create_user") + "','" + RsListPasses.getString("pass_date") + "'," +
+                                        "'" + RsListPasses.getString("pass_from") + "','" + RsListPasses.getString("pass_to").trim() + "'," +
+                                        "'" + RsListPasses.getString("pass_convoy_fio") + "','" + RsListPasses.getString("manual_car_id") + "') ; ");
+                                ;
+                            }
+                        }
                         //  Toast.makeText(MainActivity.this, synchronizationPostgresql.get().toString(), Toast.LENGTH_SHORT).show();
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }

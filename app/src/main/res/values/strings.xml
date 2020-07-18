@@ -29,4 +29,5 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="nav_settings">Настройки</string>
+    <string name="nav_AllPasses">Все пропуска</string>
 </resources>
