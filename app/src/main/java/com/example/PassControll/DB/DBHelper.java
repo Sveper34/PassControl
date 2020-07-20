@@ -102,7 +102,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.update("amp_pass", contentValues, "ampp_id=" + MainActivity.Idpass, null);
     }
 
-    public void SyncDatabase(SQLiteDatabase db, String sqlScript) {
+    public void ExecComandInDB(SQLiteDatabase db, String sqlScript) {
         db.execSQL(sqlScript);
     }
 }

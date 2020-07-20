@@ -35,41 +35,39 @@ public class AllPassesContentFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-//        Cursor getInfoButton = MainActivity.Database.rawQuery("Select * from amp_pass ;", null);
-
         TableLayout tl = (TableLayout) getView().findViewById(R.id.TableContent);
-        Cursor cursor = MainActivity.Database.rawQuery("Select * from amp_pass_content ;", null);
+        Cursor cursor = MainActivity.Database.rawQuery("Select * from amp_pass ;", null);
         while (cursor.moveToNext()) {
             //Создание строк
             TableRow tr = new TableRow(getActivity());
             TextView tvCell = new TextView(getActivity());
             tvCell.setTextSize(18);
             tvCell.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_INDEX")));
+            tvCell.setText(cursor.getString(cursor.getColumnIndex("ampp_INDEX")));
             tr.addView(tvCell);
 
             tvCell = new TextView(getActivity());
             tvCell.setTextSize(18);
             tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_TITLE")));
+            tvCell.setText(cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE")));
             tr.addView(tvCell);
 
             tvCell = new TextView(getActivity());
             tvCell.setTextSize(18);
             tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_INVENTORY_NUMBER")));
+            tvCell.setText(cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")));
             tr.addView(tvCell);
 
             tvCell = new TextView(getActivity());
             tvCell.setTextSize(18);
             tvCell.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_AMOUNT")));
+            tvCell.setText(cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")));
             tr.addView(tvCell);
 
             tvCell = new TextView(getActivity());
             tvCell.setTextSize(18);
             tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_UNIT")));
+            tvCell.setText(cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")));
             tr.addView(tvCell);
             //добавление строки
             tl.addView(tr);

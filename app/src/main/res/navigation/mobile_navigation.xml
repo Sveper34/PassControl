@@ -38,10 +38,10 @@
     <fragment
         android:id="@+id/nav_allPassesContentFragment"
         android:name="com.example.PassControll.AllPassesActivity.AllPassesContentFragment"
-        android:label="AllPassesContentFragment" >
-        tools:layout="@layout/allPassesContentFragment"
+        android:label="allpassesfragment_content"
+        tools:layout="@layout/allpassesfragment_content" >
         <action
-            android:id="@+id/action_allPassesContentFragment_to_settingsActivity"
+            android:id="@+id/action_allPassesContentFragment_to_nav_settingsActivity"
             app:destination="@id/nav_settingsActivity" />
     </fragment>
 
