@@ -113,18 +113,36 @@ public class MainActivity extends AppCompatActivity {
                     synchronizationPostgresql = new ConnectionToPostgreSQL();
                     synchronizationPostgresql.execute();
                     try {
-                        dbHelper.ExecComandInDB(Database, "delete from amp_pass;");
                         ResultSet[] RsListPasses = (ResultSet[]) synchronizationPostgresql.get();
-//                        System.out.println(st);
                         if (RsListPasses[0] != null) {
-
-                            while (RsListPasses[0].next()) {
+                            dbHelper.ExecComandInDB(Database, "delete from amp_pass;");
+                            while (RsListPasses[0].next()) {// пропуска
                                 dbHelper.ExecComandInDB(Database, "insert into amp_pass(ampp_id,ampp_INDEX,ampp_CREATE_USER_FIO,ampp_AGREED_DATE,ampp_PLACE_FROM,ampp_PLACE_TO,ampp_ATTENDANT_FIO,ampp_TRANSPORT_INFO)" +
                                         "values(" + RsListPasses[0].getString("id") + ",'" + RsListPasses[0].getString("pass_number") + "'," +
                                         "'" + RsListPasses[0].getString("pass_create_user") + "','" + RsListPasses[0].getString("pass_date") + "'," +
                                         "'" + RsListPasses[0].getString("pass_from") + "','" + RsListPasses[0].getString("pass_to").trim() + "'," +
                                         "'" + RsListPasses[0].getString("pass_convoy_fio") + "','" + RsListPasses[0].getString("manual_car_id") + "') ; ");
-                                ;
+                            }
+                        }
+                        if (RsListPasses[1] != null) {
+                            dbHelper.ExecComandInDB(Database, "delete from amp_pass_content;");
+                            while (RsListPasses[1].next()) {//составы пропусков
+                                dbHelper.ExecComandInDB(Database, "insert into amp_pass_content(amppc_id ,amppc_SYNC_DATETIME ,amppc_PASS_ID , amppc_INDEX ,amppc_TITLE  ,amppc_INVENTORY_NUMBER , amppc_AMOUNT ,amppc_UNIT)" +
+                                        "values (" + RsListPasses[1].getInt("id") + ",'"//amppc_id
+                                        + RsListPasses[1].getString("id") + "','"//amppc_SYNC_DATETIME
+                                        + RsListPasses[1].getString("list_passes_id") + "','"//amppc_PASS_ID
+                                        + RsListPasses[1].getString("pass_content_index") + "','"//amppc_INDEX
+                                        + RsListPasses[1].getString("pass_content_title") + "','"//amppc_TITLE
+                                        + RsListPasses[1].getString("pass_content_inv_number") + "','"//amppc_INVENTORY_NUMBER
+                                        + RsListPasses[1].getString("pass_count") + "','"//amppc_AMOUNT
+                                        + RsListPasses[1].getString("amppc_UNIT") + "');");//amppc_UNIT
+                            }
+                        }
+                        if (RsListPasses[2] != null) {//вахты
+                            dbHelper.ExecComandInDB(Database, "delete from amp_watch;");
+                            while (RsListPasses[2].next()) {
+                                dbHelper.ExecComandInDB(Database, "insert into amp_watch(ampw_ID,ampw_SHORT_TITLE,ampw_FULL_TITLE) values (" + RsListPasses[2].getInt("id") + ",'" +
+                                        RsListPasses[2].getString("short_title") + "','" + RsListPasses[2].getString("full_title") + "');");
                             }
                         }
                         //  Toast.makeText(MainActivity.this, synchronizationPostgresql.get().toString(), Toast.LENGTH_SHORT).show();
@@ -139,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        //Установка на зарядку ы
         IntentFilter ifBattaryChanged = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         registerReceiver(brCharge, ifBattaryChanged);
         //Штрих Код
