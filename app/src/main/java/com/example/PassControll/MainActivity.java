@@ -26,6 +26,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private BroadcastReceiver brbarCode;
     private BroadcastReceiver brCharge;
-    public String type, barcode;
+    public String barcode;
     //    public final static String BROADCAST_ACTION = "com.xcheng.scanner.action.BARCODE_DECODING_BROADCAST";
     public final static String BROADCAST_ACTION = "android.intent.ACTION_DECODE_DATA";
     DBHelper dbHelper = new DBHelper(this);
@@ -108,11 +110,31 @@ public class MainActivity extends AppCompatActivity {
 
                 int chargePlug = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
                 boolean usbCharge = chargePlug == BATTERY_PLUGGED_USB;
-
+                Button bt = findViewById(R.id.button);
                 if (usbCharge & isCharging) {
                     synchronizationPostgresql = new ConnectionToPostgreSQL();
+                    //
+                    String ipAddrtrash, ipAddr = "";
+                    Process processGetIppaddr;
+                    try {
+                        processGetIppaddr = Runtime.getRuntime().exec("ip n");
+                        BufferedReader br = new BufferedReader(
+                                new InputStreamReader(processGetIppaddr.getInputStream()));
+                        while ((ipAddrtrash = br.readLine()) != null) {
+                            if (ipAddrtrash.indexOf("FAILED") == -1)
+                                ipAddr = ipAddrtrash.substring(0, ipAddrtrash.indexOf("dev") - 1);
+                        }
+                        processGetIppaddr.waitFor();
+                        processGetIppaddr.destroy();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    //
+                    synchronizationPostgresql.IpAdrressConection = ipAddr;
                     synchronizationPostgresql.execute();
                     try {
+                        //  Toast.makeText(MainActivity.this, synchronizationPostgresql.get().toString(), Toast.LENGTH_SHORT).show();
                         ResultSet[] RsListPasses = (ResultSet[]) synchronizationPostgresql.get();
                         if (RsListPasses[0] != null) {
                             dbHelper.ExecComandInDB(Database, "delete from amp_pass;");
@@ -121,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                                         "values(" + RsListPasses[0].getString("id") + ",'" + RsListPasses[0].getString("pass_number") + "'," +
                                         "'" + RsListPasses[0].getString("pass_create_user") + "','" + RsListPasses[0].getString("pass_date") + "'," +
                                         "'" + RsListPasses[0].getString("pass_from") + "','" + RsListPasses[0].getString("pass_to").trim() + "'," +
-                                        "'" + RsListPasses[0].getString("pass_convoy_fio") + "','" + RsListPasses[0].getString("manual_car_id") + "') ; ");
+                                        "'" + RsListPasses[0].getString("fio_convoy") + "','" + RsListPasses[0].getString("car") + "') ; ");
                             }
                         }
                         if (RsListPasses[1] != null) {
@@ -147,9 +169,12 @@ public class MainActivity extends AppCompatActivity {
                         }
                         //  Toast.makeText(MainActivity.this, synchronizationPostgresql.get().toString(), Toast.LENGTH_SHORT).show();
                     } catch (ExecutionException e) {
+                        //Button bt=findViewById(R.id.button);
+                        bt.setText(e.toString());
                         e.printStackTrace();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                        bt.setText(e.toString());
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -210,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void ButtonAllPassesOnClick(View view) {
 //        Intent inttent = new Intent(MainActivity.this, SettingsActivity.class);
-//        startActivity(inttent );
+//        startActivity(inttent);
         navController.navigate(R.id.action_nav_home_to_allPassesContentFragment);
     }
 }
