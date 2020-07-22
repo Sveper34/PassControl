@@ -34,21 +34,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvTitleNumberDate" />
 
             <TextView
-                android:id="@+id/tvTitleFromTo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:text="Откуда / Куда"
-                android:textAlignment="textStart"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDate" />
-
-            <TextView
                 android:id="@+id/tvFromTo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,21 +46,6 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTitleFromTo" />
-
-            <TextView
-                android:id="@+id/tvTitleAttendant"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:text="Сопровождающий"
-                android:textAlignment="textStart"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTo" />
 
             <TextView
                 android:id="@+id/tvAttendant"
@@ -92,21 +62,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvTitleAttendant" />
 
             <TextView
-                android:id="@+id/tvTitleCar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="8dp"
-                android:text="Автомобиль"
-                android:textAlignment="textStart"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvAttendant" />
-
-            <TextView
                 android:id="@+id/tvCar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -121,7 +76,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvTitleCar" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/bOpenContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="bOpenContentOnClick"
@@ -130,13 +85,4 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="403dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="12dp"
-        android:onClick="ButtonAllPassesOnClick"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

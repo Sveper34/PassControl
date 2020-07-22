@@ -82,21 +82,22 @@ public class MainActivity extends AppCompatActivity {
                 TextView tvfromTo = (TextView) findViewById(R.id.tvFromTo);
                 TextView tvAttendant = (TextView) findViewById(R.id.tvAttendant);
                 TextView tvcar = (TextView) findViewById(R.id.tvCar);
+                Button btContent = (Button) findViewById(R.id.bOpenContent);
 
-
-                // Button btContent = (Button) findViewById(R.id.bOpenContent);
                 Cursor cursor = Database.rawQuery("select * from amp_pass where ampp_id='" + barcode.trim() + "'", null);
                 if (cursor.moveToNext()) {
                     tvNumberDate.setText("Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX")) + " от " + cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE")));
-                    tvfromTo.setText(cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")) + " / " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")));
-                    tvAttendant.setText(cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")));
-                    tvcar.setText(cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")));
+                    tvfromTo.setText("Откуда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")) + ". Куда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")));
+                    tvAttendant.setText("Сопровождающий: " + cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")));
+                    tvcar.setText("Автомобиль: " + cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")));
+                    btContent.setVisibility(View.VISIBLE);
                     Idpass = cursor.getInt(cursor.getColumnIndex("ampp_id"));
                 } else {
                     tvNumberDate.setText("");
                     tvfromTo.setText("");
                     tvAttendant.setText("");
                     tvcar.setText("");
+                    btContent.setVisibility(View.INVISIBLE);
                     Toast.makeText(MainActivity.this, "Пропуск не найден", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
                 int chargePlug = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
                 boolean usbCharge = chargePlug == BATTERY_PLUGGED_USB;
-                Button bt = findViewById(R.id.button);
+                Button bt = findViewById(R.id.bOpenContent);
                 if (usbCharge & isCharging) {
                     synchronizationPostgresql = new ConnectionToPostgreSQL();
                     //
