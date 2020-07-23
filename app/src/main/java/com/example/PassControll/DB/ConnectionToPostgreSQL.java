@@ -25,7 +25,8 @@ public class ConnectionToPostgreSQL extends AsyncTask {
         ResultSet Result[] = new ResultSet[3];//Переменная для возврата полученных данных синхронизации
         Cursor cursor= (Cursor) objects[0];
         while (cursor.moveToNext()){
-            System.out.println("Сема пидор");
+            //Внесение информации об обратной синхронизации
+            //System.out.println("Сема пидор");
         }
        // DriverManager.setLoginTimeout(1);
         try {
