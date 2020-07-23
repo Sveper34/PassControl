@@ -44,7 +44,7 @@ public class ContentFragment extends Fragment {
 
         Cursor getInfoButton = MainActivity.Database.rawQuery("Select * from amp_pass where ampp_ID=" + MainActivity.Idpass + ";", null);
         while (getInfoButton.moveToNext()) {
-            btImport.setText("Привет");
+
             if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_IN_CONTROL_POINT_ID")) <= 0)
                 btImport.setText("Ввоз ТМЦ");
             else btImport.setText("Отменить ввоз ТМЦ");

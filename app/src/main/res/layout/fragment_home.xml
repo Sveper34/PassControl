@@ -78,11 +78,24 @@
             <Button
                 android:id="@+id/bOpenContent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:onClick="bOpenContentOnClick"
-                android:text="Открыть состав пропуска" />
+                android:text="Открыть состав пропуска"
+                android:visibility="invisible" />
 
         </LinearLayout>
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/ProgressBarSyncDataBase"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="105dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="20dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

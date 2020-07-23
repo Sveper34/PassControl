@@ -1,6 +1,7 @@
 package com.example.PassControll.DB;
 
 
+import android.database.Cursor;
 import android.os.AsyncTask;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,13 +22,17 @@ public class ConnectionToPostgreSQL extends AsyncTask {
     @Override
     protected ResultSet[] doInBackground(Object... objects) {
                 //Синхронизация информации
-        ResultSet Result[] = new ResultSet[3];
-        DriverManager.setLoginTimeout(1);
+        ResultSet Result[] = new ResultSet[3];//Переменная для возврата полученных данных синхронизации
+        Cursor cursor= (Cursor) objects[0];
+        while (cursor.moveToNext()){
+            System.out.println("Сема пидор");
+        }
+       // DriverManager.setLoginTimeout(1);
         try {
             //Production//con = DriverManager.getConnection("jdbc:postgresql://192.168.42.68:5433/dev", "user_android", "user_android");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
             //Test
-            //con = DriverManager.getConnection("jdbc:postgresql://192.168.42.137:5432/dev", "postgres", "123456789");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
-            con = DriverManager.getConnection("jdbc:postgresql://"+IpAdrressConection+":5433/dev", "user_android", "user_android");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
+            con = DriverManager.getConnection("jdbc:postgresql://"+IpAdrressConection+"/dev", "postgres", "123456789");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
+            //con = DriverManager.getConnection("jdbc:postgresql://"+IpAdrressConection+":5433/dev", "user_android", "user_android");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
             stmtListPasses = con.createStatement();
             stmtListPassesContent = con.createStatement();
             stmtWatch = con.createStatement();

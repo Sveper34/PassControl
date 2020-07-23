@@ -8,16 +8,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.PassControll.DB.ConnectionToPostgreSQL;
 import com.example.PassControll.DB.DBHelper;
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,7 +25,6 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
@@ -73,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
         brbarCode = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+//                if(!isForeground(context)){
+//                    Intent ActivityMaintoStart = new Intent("android.intent.action.MAIN");
+//                    context.startActivity(ActivityMaintoStart);
+//                }
 //                type = intent.getStringExtra("EXTRA_BARCODE_DECODING_SYMBOLE");
 //                barcode = intent.getStringExtra("EXTRA_BARCODE_DECODING_DATA");
 //                type = intent.getStringExtra("barcode_string");
@@ -84,9 +87,10 @@ public class MainActivity extends AppCompatActivity {
                 TextView tvcar = (TextView) findViewById(R.id.tvCar);
                 Button btContent = (Button) findViewById(R.id.bOpenContent);
 
-                Cursor cursor = Database.rawQuery("select * from amp_pass where ampp_id='" + barcode.trim() + "'", null);
+                Cursor cursor = Database.rawQuery("select * from amp_pass where ampp_id='" +  barcode.trim() + "'", null);
                 if (cursor.moveToNext()) {
-                    tvNumberDate.setText("Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX")) + " от " + cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE")));
+
+                    tvNumberDate.setText(setUnderlinedText("Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX"))+ " от " + cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE"))));
                     tvfromTo.setText("Откуда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")) + ". Куда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")));
                     tvAttendant.setText("Сопровождающий: " + cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")));
                     tvcar.setText("Автомобиль: " + cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")));
@@ -100,6 +104,25 @@ public class MainActivity extends AppCompatActivity {
                     btContent.setVisibility(View.INVISIBLE);
                     Toast.makeText(MainActivity.this, "Пропуск не найден", Toast.LENGTH_SHORT).show();
                 }
+            }
+//            public  boolean isForeground(Context context) {
+//                ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+//                List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+//                if (appProcesses == null) {
+//                    return false;
+//                }
+//                final String packageName = context.getPackageName();
+//                for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+//                    if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName.equals(packageName)) {
+//                        return true;
+//                    }
+//                }
+//                return false;
+//            }
+            public SpannableString setUnderlinedText(String str){
+                SpannableString NewUnderLineString = new SpannableString(str);
+                NewUnderLineString.setSpan(new UnderlineSpan(), 0, NewUnderLineString.length(), 0);
+            return NewUnderLineString;
             }
         };
         brCharge = new BroadcastReceiver() {
@@ -133,7 +156,10 @@ public class MainActivity extends AppCompatActivity {
 
                     //
                     synchronizationPostgresql.IpAdrressConection = ipAddr;
-                    synchronizationPostgresql.execute();
+                    Cursor cursor = Database.rawQuery("select * from amp_pass ", null);
+                    Object[] parameters= new Object[1];
+                    parameters[0]=cursor;
+                    synchronizationPostgresql.execute(cursor);
                     try {
                         //  Toast.makeText(MainActivity.this, synchronizationPostgresql.get().toString(), Toast.LENGTH_SHORT).show();
                         ResultSet[] RsListPasses = (ResultSet[]) synchronizationPostgresql.get();
@@ -239,4 +265,6 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(inttent);
         navController.navigate(R.id.action_nav_home_to_allPassesContentFragment);
     }
+
+
 }

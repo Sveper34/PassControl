@@ -14,7 +14,7 @@ import java.util.Locale;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String Database_name = "amp";
-    private static final Integer Database_version = 5;
+    private static final Integer Database_version = 10;
 
     public DBHelper(Context context) {
         super(context, Database_name, null, Database_version);
@@ -49,7 +49,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "ampp_PASSED_IN_CONTROL_POINT_ID integer," + //- число, ID вахты, через которую ввезли/внесли ТМЦ;
                 "ampp_PASSED_IN_DATE date," + //дата пропуска ТМЦ через вахту на ввоз/внос;
                 "ampp_PASSED_OUT_CONTROL_POINT_ID integer," + //число, ID вахты, через которую вывезли/вынесли ТМЦ;
-                "ampp_PASSED_OUT_DATE date)"); //дата пропуска ТМЦ через вахту на вывоз/вынос;
+                "ampp_PASSED_OUT_DATE date, "+ //дата пропуска ТМЦ через вахту на вывоз/вынос;
+                "ampp_type_pass integer)");
 
         //состав пропуска
         db.execSQL("create table amp_pass_content(amppc_id integer primary key," + //число, ID позиции пропуска в БД;
@@ -74,6 +75,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists amp_pass");
         db.execSQL("drop table if exists amp_pass_content");
         db.execSQL("drop table if exists amp_watch");
+        onCreate(db);
     }
 
     public void UpdateAmpPassImport(SQLiteDatabase db, Boolean NeedNull) {
