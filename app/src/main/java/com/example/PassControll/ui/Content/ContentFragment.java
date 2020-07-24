@@ -44,7 +44,7 @@ public class ContentFragment extends Fragment {
 
         Cursor getInfoButton = MainActivity.Database.rawQuery("Select * from amp_pass where ampp_ID=" + MainActivity.Idpass + ";", null);
         while (getInfoButton.moveToNext()) {
-
+            //Добавить функционал отображения правильных кнопок для ввоза вывоза!
             if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_IN_CONTROL_POINT_ID")) <= 0)
                 btImport.setText("Ввоз ТМЦ");
             else btImport.setText("Отменить ввоз ТМЦ");
@@ -63,28 +63,28 @@ public class ContentFragment extends Fragment {
             tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_INDEX")));
             tr.addView(tvCell);
 
-            tvCell = new TextView(getActivity());
-            tvCell.setTextSize(18);
-            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_TITLE")));
-            tr.addView(tvCell);
-
-            tvCell = new TextView(getActivity());
-            tvCell.setTextSize(18);
-            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_INVENTORY_NUMBER")));
-            tr.addView(tvCell);
-
-            tvCell = new TextView(getActivity());
-            tvCell.setTextSize(18);
-            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_AMOUNT")));
-            tr.addView(tvCell);
-
-            tvCell = new TextView(getActivity());
-            tvCell.setTextSize(18);
-            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_UNIT")));
+//            tvCell = new TextView(getActivity());
+//            tvCell.setTextSize(18);
+//            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+//            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_TITLE")));
+//            tr.addView(tvCell);
+//
+//            tvCell = new TextView(getActivity());
+//            tvCell.setTextSize(18);
+//            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+//            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_INVENTORY_NUMBER")));
+//            tr.addView(tvCell);
+//
+//            tvCell = new TextView(getActivity());
+//            tvCell.setTextSize(18);
+//            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+//            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_AMOUNT")));
+//            tr.addView(tvCell);
+//
+//            tvCell = new TextView(getActivity());
+//            tvCell.setTextSize(18);
+//            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+//            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_UNIT")));
             tr.addView(tvCell);
             //добавление строки
             tl.addView(tr);

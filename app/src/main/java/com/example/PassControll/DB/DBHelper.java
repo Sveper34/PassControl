@@ -14,7 +14,7 @@ import java.util.Locale;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String Database_name = "amp";
-    private static final Integer Database_version = 10;
+    private static final Integer Database_version = 11;
 
     public DBHelper(Context context) {
         super(context, Database_name, null, Database_version);

@@ -32,8 +32,8 @@ public class ConnectionToPostgreSQL extends AsyncTask {
         try {
             //Production//con = DriverManager.getConnection("jdbc:postgresql://192.168.42.68:5433/dev", "user_android", "user_android");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
             //Test
-            con = DriverManager.getConnection("jdbc:postgresql://"+IpAdrressConection+"/dev", "postgres", "123456789");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
-            //con = DriverManager.getConnection("jdbc:postgresql://"+IpAdrressConection+":5433/dev", "user_android", "user_android");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
+            //con = DriverManager.getConnection("jdbc:postgresql://"+IpAdrressConection+"/dev", "postgres", "123456789");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
+            con = DriverManager.getConnection("jdbc:postgresql://"+IpAdrressConection+":5433/dev", "user_android", "user_android");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
             stmtListPasses = con.createStatement();
             stmtListPassesContent = con.createStatement();
             stmtWatch = con.createStatement();

@@ -29,6 +29,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import static android.os.BatteryManager.BATTERY_PLUGGED_USB;
@@ -89,8 +93,9 @@ public class MainActivity extends AppCompatActivity {
 
                 Cursor cursor = Database.rawQuery("select * from amp_pass where ampp_id='" +  barcode.trim() + "'", null);
                 if (cursor.moveToNext()) {
-
-                    tvNumberDate.setText(setUnderlinedText("Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX"))+ " от " + cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE"))));
+                    String StrDate=cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE"));
+                    StrDate=StrDate.substring(8,10)+"."+StrDate.substring(5,7)+"."+ StrDate.substring(0,4);//Преобразование даты путем обрезания строки
+                    tvNumberDate.setText(setUnderlinedText("Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX"))+ " от " +StrDate));
                     tvfromTo.setText("Откуда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")) + ". Куда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")));
                     tvAttendant.setText("Сопровождающий: " + cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")));
                     tvcar.setText("Автомобиль: " + cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")));
@@ -155,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     //
+
                     synchronizationPostgresql.IpAdrressConection = ipAddr;
                     Cursor cursor = Database.rawQuery("select * from amp_pass ", null);
                     Object[] parameters= new Object[1];
@@ -168,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                             while (RsListPasses[0].next()) {// пропуска
                                 dbHelper.ExecComandInDB(Database, "insert into amp_pass(ampp_id,ampp_INDEX,ampp_CREATE_USER_FIO,ampp_AGREED_DATE,ampp_PLACE_FROM,ampp_PLACE_TO,ampp_ATTENDANT_FIO,ampp_TRANSPORT_INFO)" +
                                         "values(" + RsListPasses[0].getString("id") + ",'" + RsListPasses[0].getString("pass_number") + "'," +
-                                        "'" + RsListPasses[0].getString("pass_create_user") + "','" + RsListPasses[0].getString("pass_date") + "'," +
+                                        "'" + RsListPasses[0].getString("pass_create_user") + "','" + RsListPasses[0].getDate("pass_date")  + "'," +
                                         "'" + RsListPasses[0].getString("pass_from") + "','" + RsListPasses[0].getString("pass_to").trim() + "'," +
                                         "'" + RsListPasses[0].getString("fio_convoy") + "','" + RsListPasses[0].getString("car") + "') ; ");
                             }
