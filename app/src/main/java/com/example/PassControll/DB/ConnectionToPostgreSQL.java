@@ -3,8 +3,10 @@ package com.example.PassControll.DB;
 
 import android.database.Cursor;
 import android.os.AsyncTask;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,22 +20,28 @@ public class ConnectionToPostgreSQL extends AsyncTask {
     private ResultSet RsListPasses;
     private ResultSet RsListPassesContent;
     private ResultSet RsWatch;
+    private PreparedStatement psUpdaetInPostgreSQL;
     public String IpAdrressConection;
+
     @Override
     protected ResultSet[] doInBackground(Object... objects) {
-                //Синхронизация информации
-        ResultSet Result[] = new ResultSet[3];//Переменная для возврата полученных данных синхронизации
-        Cursor cursor= (Cursor) objects[0];
-        while (cursor.moveToNext()){
-            //Внесение информации об обратной синхронизации
-            //System.out.println("Сема пидор");
-        }
-       // DriverManager.setLoginTimeout(1);
-        try {
+        ResultSet Result[] = new ResultSet[3];
+        try {         //Синхронизация информации
+            //Переменная для возврата полученных данных синхронизации
+            Cursor cursor = (Cursor) objects[0];
             //Production//con = DriverManager.getConnection("jdbc:postgresql://192.168.42.68:5433/dev", "user_android", "user_android");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
             //Test
             //con = DriverManager.getConnection("jdbc:postgresql://"+IpAdrressConection+"/dev", "postgres", "123456789");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
-            con = DriverManager.getConnection("jdbc:postgresql://"+IpAdrressConection+":5433/dev", "user_android", "user_android");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
+            con = DriverManager.getConnection("jdbc:postgresql://" + IpAdrressConection + ":5433/dev", "user_android", "user_android");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
+            while (cursor.moveToNext()) {
+                //Внесение информации об обратной синхронизации
+                psUpdaetInPostgreSQL = con.prepareStatement("update amp.list_passes set ");
+
+                psUpdaetInPostgreSQL.execute();
+            }
+            // DriverManager.setLoginTimeout(1);
+
+            //Получение информации
             stmtListPasses = con.createStatement();
             stmtListPassesContent = con.createStatement();
             stmtWatch = con.createStatement();
@@ -54,7 +62,7 @@ public class ConnectionToPostgreSQL extends AsyncTask {
         Result[0] = RsListPasses;
         Result[1] = RsListPassesContent;
         Result[2] = RsWatch;
-        return  Result;
+        return Result;
     }
 }
 

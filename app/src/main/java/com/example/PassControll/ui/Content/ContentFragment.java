@@ -44,13 +44,36 @@ public class ContentFragment extends Fragment {
 
         Cursor getInfoButton = MainActivity.Database.rawQuery("Select * from amp_pass where ampp_ID=" + MainActivity.Idpass + ";", null);
         while (getInfoButton.moveToNext()) {
-            //Добавить функционал отображения правильных кнопок для ввоза вывоза!
-            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_IN_CONTROL_POINT_ID")) <= 0)
+
+            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 1) {//вынос
                 btImport.setText("Ввоз ТМЦ");
-            else btImport.setText("Отменить ввоз ТМЦ");
-            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID")) <= 0)
+                btImport.setVisibility(View.VISIBLE);
+                btExport.setVisibility(View.INVISIBLE);
+            }
+            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 2) {//внос
                 btExport.setText("Вывоз ТМЦ");
-            else btExport.setText("Отменить вывоз ТМЦ");
+                btExport.setVisibility(View.VISIBLE);
+                btImport.setVisibility(View.INVISIBLE);
+            }
+            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 3) {//вынос внос
+                if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID")) <= 0) {
+                    btExport.setText("Вывоз ТМЦ");
+                    btImport.setVisibility(View.INVISIBLE);
+                    btExport.setVisibility(View.VISIBLE);
+                } else {
+                    btImport.setText("Ввоз ТМЦ");
+                    btImport.setVisibility(View.VISIBLE);
+                    btExport.setVisibility(View.INVISIBLE);
+                }
+
+            }
+            //Добавить функционал отображения правильных кнопок для ввоза вывоза!
+//            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_IN_CONTROL_POINT_ID")) <= 0)
+//                btImport.setText("Ввоз ТМЦ");
+//            else btImport.setText("Отменить ввоз ТМЦ");
+//            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID")) <= 0)
+//                btExport.setText("Вывоз ТМЦ");
+//            else btExport.setText("Отменить вывоз ТМЦ");
         }
         TableLayout tl = (TableLayout) getView().findViewById(R.id.TableContent);
         Cursor cursor = MainActivity.Database.rawQuery("Select * from amp_pass_content where amppc_PASS_ID=" + MainActivity.Idpass + ";", null);
@@ -63,11 +86,11 @@ public class ContentFragment extends Fragment {
             tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_INDEX")));
             tr.addView(tvCell);
 
-//            tvCell = new TextView(getActivity());
-//            tvCell.setTextSize(18);
-//            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-//            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_TITLE")));
-//            tr.addView(tvCell);
+            tvCell = new TextView(getActivity());
+            tvCell.setTextSize(18);
+            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_TITLE")));
+            tr.addView(tvCell);
 //
 //            tvCell = new TextView(getActivity());
 //            tvCell.setTextSize(18);
@@ -85,7 +108,7 @@ public class ContentFragment extends Fragment {
 //            tvCell.setTextSize(18);
 //            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
 //            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_UNIT")));
-            tr.addView(tvCell);
+//            tr.addView(tvCell);
             //добавление строки
             tl.addView(tr);
         }

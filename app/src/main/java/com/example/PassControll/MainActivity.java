@@ -172,11 +172,11 @@ public class MainActivity extends AppCompatActivity {
                         if (RsListPasses[0] != null) {
                             dbHelper.ExecComandInDB(Database, "delete from amp_pass;");
                             while (RsListPasses[0].next()) {// пропуска
-                                dbHelper.ExecComandInDB(Database, "insert into amp_pass(ampp_id,ampp_INDEX,ampp_CREATE_USER_FIO,ampp_AGREED_DATE,ampp_PLACE_FROM,ampp_PLACE_TO,ampp_ATTENDANT_FIO,ampp_TRANSPORT_INFO)" +
+                                dbHelper.ExecComandInDB(Database, "insert into amp_pass(ampp_id,ampp_INDEX,ampp_CREATE_USER_FIO,ampp_AGREED_DATE,ampp_PLACE_FROM,ampp_PLACE_TO,ampp_ATTENDANT_FIO,ampp_TRANSPORT_INFO,ampp_type_pass)" +
                                         "values(" + RsListPasses[0].getString("id") + ",'" + RsListPasses[0].getString("pass_number") + "'," +
                                         "'" + RsListPasses[0].getString("pass_create_user") + "','" + RsListPasses[0].getDate("pass_date")  + "'," +
                                         "'" + RsListPasses[0].getString("pass_from") + "','" + RsListPasses[0].getString("pass_to").trim() + "'," +
-                                        "'" + RsListPasses[0].getString("fio_convoy") + "','" + RsListPasses[0].getString("car") + "') ; ");
+                                        "'" + RsListPasses[0].getString("fio_convoy") + "','" + RsListPasses[0].getString("car") + "',"+RsListPasses[0].getInt("pass_type")+") ; ");
                             }
                         }
                         if (RsListPasses[1] != null) {
