@@ -1,23 +1,32 @@
 package com.example.PassControll;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.PassControll.DB.ConnectionToPostgreSQL;
 import com.example.PassControll.DB.DBHelper;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,6 +34,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
@@ -91,11 +101,11 @@ public class MainActivity extends AppCompatActivity {
                 TextView tvcar = (TextView) findViewById(R.id.tvCar);
                 Button btContent = (Button) findViewById(R.id.bOpenContent);
 
-                Cursor cursor = Database.rawQuery("select * from amp_pass where ampp_id='" +  barcode.trim() + "'", null);
+                Cursor cursor = Database.rawQuery("select * from amp_pass where ampp_id='" + barcode.trim() + "'", null);
                 if (cursor.moveToNext()) {
-                    String StrDate=cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE"));
-                    StrDate=StrDate.substring(8,10)+"."+StrDate.substring(5,7)+"."+ StrDate.substring(0,4);//Преобразование даты путем обрезания строки
-                    tvNumberDate.setText(setUnderlinedText("Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX"))+ " от " +StrDate));
+                    String StrDate = cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE"));
+                    StrDate = StrDate.substring(8, 10) + "." + StrDate.substring(5, 7) + "." + StrDate.substring(0, 4);//Преобразование даты путем обрезания строки
+                    tvNumberDate.setText(setUnderlinedText("Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX")) + " от " + StrDate));
                     tvfromTo.setText("Откуда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")) + ". Куда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")));
                     tvAttendant.setText("Сопровождающий: " + cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")));
                     tvcar.setText("Автомобиль: " + cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")));
@@ -110,24 +120,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Пропуск не найден", Toast.LENGTH_SHORT).show();
                 }
             }
-//            public  boolean isForeground(Context context) {
-//                ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-//                List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
-//                if (appProcesses == null) {
-//                    return false;
-//                }
-//                final String packageName = context.getPackageName();
-//                for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
-//                    if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName.equals(packageName)) {
-//                        return true;
-//                    }
-//                }
-//                return false;
-//            }
-            public SpannableString setUnderlinedText(String str){
+
+            public SpannableString setUnderlinedText(String str) {
                 SpannableString NewUnderLineString = new SpannableString(str);
                 NewUnderLineString.setSpan(new UnderlineSpan(), 0, NewUnderLineString.length(), 0);
-            return NewUnderLineString;
+                return NewUnderLineString;
             }
         };
         brCharge = new BroadcastReceiver() {
@@ -163,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
 
                     synchronizationPostgresql.IpAdrressConection = ipAddr;
                     Cursor cursor = Database.rawQuery("select * from amp_pass ", null);
-                    Object[] parameters= new Object[1];
-                    parameters[0]=cursor;
+                    Object[] parameters = new Object[1];
+                    parameters[0] = cursor;
                     synchronizationPostgresql.execute(cursor);
                     try {
                         //  Toast.makeText(MainActivity.this, synchronizationPostgresql.get().toString(), Toast.LENGTH_SHORT).show();
@@ -172,17 +169,19 @@ public class MainActivity extends AppCompatActivity {
                         if (RsListPasses[0] != null) {
                             dbHelper.ExecComandInDB(Database, "delete from amp_pass;");
                             while (RsListPasses[0].next()) {// пропуска
-                                dbHelper.ExecComandInDB(Database, "insert into amp_pass(ampp_id,ampp_INDEX,ampp_CREATE_USER_FIO,ampp_AGREED_DATE,ampp_PLACE_FROM,ampp_PLACE_TO,ampp_ATTENDANT_FIO,ampp_TRANSPORT_INFO,ampp_type_pass)" +
+                                dbHelper.ExecComandInDB(Database, "insert into amp_pass(ampp_id,ampp_INDEX,ampp_CREATE_USER_FIO,ampp_AGREED_DATE,ampp_PLACE_FROM,ampp_PLACE_TO,ampp_ATTENDANT_FIO,ampp_TRANSPORT_INFO,ampp_type_pass,ampp_PASSED_IN_DATE,ampp_PASSED_out_DATE)" +
                                         "values(" + RsListPasses[0].getString("id") + ",'" + RsListPasses[0].getString("pass_number") + "'," +
-                                        "'" + RsListPasses[0].getString("pass_create_user") + "','" + RsListPasses[0].getDate("pass_date")  + "'," +
+                                        "'" + RsListPasses[0].getString("pass_create_user") + "','" + RsListPasses[0].getDate("pass_date") + "'," +
                                         "'" + RsListPasses[0].getString("pass_from") + "','" + RsListPasses[0].getString("pass_to").trim() + "'," +
-                                        "'" + RsListPasses[0].getString("fio_convoy") + "','" + RsListPasses[0].getString("car") + "',"+RsListPasses[0].getInt("pass_type")+") ; ");
+                                        "'" + RsListPasses[0].getString("fio_convoy") + "','" + RsListPasses[0].getString("car") + "',"
+                                        + RsListPasses[0].getInt("pass_type") + ",'" + RsListPasses[0].getDate("pass_in_date") +
+                                        "','" + RsListPasses[0].getDate("pass_out_date") + "') ; ");
                             }
                         }
                         if (RsListPasses[1] != null) {
                             dbHelper.ExecComandInDB(Database, "delete from amp_pass_content;");
                             while (RsListPasses[1].next()) {//составы пропусков
-                                dbHelper.ExecComandInDB(Database, "insert into amp_pass_content(amppc_id ,amppc_SYNC_DATETIME ,amppc_PASS_ID , amppc_INDEX ,amppc_TITLE  ,amppc_INVENTORY_NUMBER , amppc_AMOUNT ,amppc_UNIT)" +
+                                dbHelper.ExecComandInDB(Database, "insert into amp_pass_content(amppc_id ,amppc_SYNC_DATETIME ,amppc_PASS_ID , amppc_INDEX ,amppc_TITLE  ,amppc_INVENTORY_NUMBER , amppc_AMOUNT ,amppc_UNIT,ampp_PASSED_IN_DATE)" +
                                         "values (" + RsListPasses[1].getInt("id") + ",'"//amppc_id
                                         + RsListPasses[1].getString("id") + "','"//amppc_SYNC_DATETIME
                                         + RsListPasses[1].getString("list_passes_id") + "','"//amppc_PASS_ID
@@ -271,6 +270,4 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(inttent);
         navController.navigate(R.id.action_nav_home_to_allPassesContentFragment);
     }
-
-
 }

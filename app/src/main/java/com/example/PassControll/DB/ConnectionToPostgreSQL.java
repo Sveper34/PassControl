@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,8 +36,9 @@ public class ConnectionToPostgreSQL extends AsyncTask {
             con = DriverManager.getConnection("jdbc:postgresql://" + IpAdrressConection + ":5433/dev", "user_android", "user_android");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
             while (cursor.moveToNext()) {
                 //Внесение информации об обратной синхронизации
-                psUpdaetInPostgreSQL = con.prepareStatement("update amp.list_passes set ");
-
+                psUpdaetInPostgreSQL = con.prepareStatement("update amp.list_passes set amp.list_passes.pass_in_date=?,amp.list_passes.pass_out_date=? where amp.list_passes.id=" + cursor.getString(cursor.getColumnIndex("ampp_id")));
+                psUpdaetInPostgreSQL.setDate(1, Date.valueOf(cursor.getString(cursor.getColumnIndex("ampp_PASSED_IN_DATE"))));//ampp_PASSED_IN_DATE
+                psUpdaetInPostgreSQL.setDate(2, Date.valueOf(cursor.getString(cursor.getColumnIndex("ampp_PASSED_OUT_DATE"))));//ampp_PASSED_OUT_DATE
                 psUpdaetInPostgreSQL.execute();
             }
             // DriverManager.setLoginTimeout(1);
