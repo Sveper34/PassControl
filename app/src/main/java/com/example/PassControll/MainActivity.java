@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                     //
 
                     synchronizationPostgresql.IpAdrressConection = ipAddr;
-                    Cursor cursor = Database.rawQuery("select * from amp_pass ", null);
+                    Cursor cursor = Database.rawQuery("select amp_pass.* from amp_pass ", null);
                     Object[] parameters = new Object[1];
                     parameters[0] = cursor;
                     synchronizationPostgresql.execute(cursor);
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                         if (RsListPasses[1] != null) {
                             dbHelper.ExecComandInDB(Database, "delete from amp_pass_content;");
                             while (RsListPasses[1].next()) {//составы пропусков
-                                dbHelper.ExecComandInDB(Database, "insert into amp_pass_content(amppc_id ,amppc_SYNC_DATETIME ,amppc_PASS_ID , amppc_INDEX ,amppc_TITLE  ,amppc_INVENTORY_NUMBER , amppc_AMOUNT ,amppc_UNIT,ampp_PASSED_IN_DATE)" +
+                                dbHelper.ExecComandInDB(Database, "insert into amp_pass_content(amppc_id ,amppc_SYNC_DATETIME ,amppc_PASS_ID , amppc_INDEX ,amppc_TITLE  ,amppc_INVENTORY_NUMBER , amppc_AMOUNT ,amppc_UNIT)" +
                                         "values (" + RsListPasses[1].getInt("id") + ",'"//amppc_id
                                         + RsListPasses[1].getString("id") + "','"//amppc_SYNC_DATETIME
                                         + RsListPasses[1].getString("list_passes_id") + "','"//amppc_PASS_ID

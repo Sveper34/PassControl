@@ -44,8 +44,8 @@ public class ContentFragment extends Fragment {
 
         Cursor getInfoButton = MainActivity.Database.rawQuery("Select * from amp_pass where ampp_ID=" + MainActivity.Idpass + ";", null);
         while (getInfoButton.moveToNext()) {
-
-            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 1) {//вынос
+            int type =getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass"));
+            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 1) {
                 btImport.setText("Ввоз ТМЦ");
                 btImport.setVisibility(View.VISIBLE);
                 btExport.setVisibility(View.INVISIBLE);
@@ -89,7 +89,7 @@ public class ContentFragment extends Fragment {
             tvCell = new TextView(getActivity());
             tvCell.setTextSize(18);
             tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_TITLE")));
+            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_TITLE"))+"("+cursor.getString(cursor.getColumnIndex("amppc_AMOUNT"))+" "+cursor.getString(cursor.getColumnIndex("amppc_UNIT"))+").");
             tr.addView(tvCell);
 //
 //            tvCell = new TextView(getActivity());
