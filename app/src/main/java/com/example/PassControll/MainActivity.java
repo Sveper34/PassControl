@@ -105,10 +105,28 @@ public class MainActivity extends AppCompatActivity {
                 if (cursor.moveToNext()) {
                     String StrDate = cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE"));
                     StrDate = StrDate.substring(8, 10) + "." + StrDate.substring(5, 7) + "." + StrDate.substring(0, 4);//Преобразование даты путем обрезания строки
-                    tvNumberDate.setText(setUnderlinedText("Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX")) + " от " + StrDate));
-                    tvfromTo.setText("Откуда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")) + ". Куда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")));
-                    tvAttendant.setText("Сопровождающий: " + cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")));
-                    tvcar.setText("Автомобиль: " + cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")));
+
+                    //Создание костомизированного TextView текста
+                    SpannableString NewUnderLineString = new SpannableString("Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX")) + " от " + StrDate);
+                    NewUnderLineString.setSpan(new UnderlineSpan(), 9, 9+cursor.getString(cursor.getColumnIndex("ampp_INDEX")).length(), 0);
+                    NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length()-StrDate.length(), NewUnderLineString.length(), 0);
+                    //Полностью сформированную строку закидываем на отображение
+                    //Строка с номером пропуска и датой пропуска
+                    tvNumberDate.setText(NewUnderLineString);//"Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX")) + " от " + StrDate);
+                    //формирование строки Откуда Куда)
+                    NewUnderLineString = new SpannableString("Откуда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")) + ". Куда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")));
+                    NewUnderLineString.setSpan(new UnderlineSpan(), 8, 8+cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")).length(), 0);
+                    NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length()-cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")).length(), NewUnderLineString.length(), 0);
+                    tvfromTo.setText(NewUnderLineString);
+                    //Формирование сопровождающего
+                    NewUnderLineString = new SpannableString("Сопровождающий: " + cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")));
+                    NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length()-cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")).length(), NewUnderLineString.length(), 0);
+                    tvAttendant.setText(NewUnderLineString);
+                    //формирование автомобиль
+                    NewUnderLineString = new SpannableString("Автомобиль: " + cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")));
+                    NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length()-cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")).length(), NewUnderLineString.length(), 0);
+                    tvcar.setText(NewUnderLineString);
+
                     btContent.setVisibility(View.VISIBLE);
                     Idpass = cursor.getInt(cursor.getColumnIndex("ampp_id"));
                 } else {
@@ -121,11 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            public SpannableString setUnderlinedText(String str) {
-                SpannableString NewUnderLineString = new SpannableString(str);
-                NewUnderLineString.setSpan(new UnderlineSpan(), 0, NewUnderLineString.length(), 0);
-                return NewUnderLineString;
-            }
+
         };
         brCharge = new BroadcastReceiver() {
             @Override
@@ -242,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(brbarCode);
         unregisterReceiver(brCharge);
     }
-    
+
     public void bOpenContentOnClick(View view) {
         navController.navigate(R.id.action_nav_home_to_nav_Content);
     }

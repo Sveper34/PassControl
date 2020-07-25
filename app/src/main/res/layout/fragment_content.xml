@@ -38,14 +38,20 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="№ П/п" />
+                            android:text="@string/ampp_number" />
 
                         <TextView
                             android:id="@+id/clTitle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="274dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="Наименование позиции" />
+                            android:text="@string/AMPP_titlle" />
+
+                        <TextView
+                            android:id="@+id/clInvetiruNumber"
+                            android:layout_width="85dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/InventoryNumberText" />
 
                     </TableRow>
 
