@@ -41,8 +41,8 @@ public class ConnectionToPostgreSQL extends AsyncTask {
                 psUpdaetInPostgreSQL = con.prepareStatement("update amp.list_passes set" +
                         " pass_in_date=" + GetstrWithForging(cursor.getString(cursor.getColumnIndex("ampp_PASSED_IN_DATE"))) +" ,"+
                         " pass_out_date=" + GetstrWithForging(cursor.getString(cursor.getColumnIndex("ampp_PASSED_OUT_DATE"))) +", "+
-                        " pass_watch_in=" +cursor.getString(cursor.getColumnIndex("ampp_PASSED_IN_CONTROL_POINT_ID"))+", "+
-                        " pass_watch_out="+cursor.getString(cursor.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID"))+", "+
+                        " pass_watch_in=" +cursor.getInt(cursor.getColumnIndex("ampp_PASSED_IN_CONTROL_POINT_ID"))+", "+
+                        " pass_watch_out="+cursor.getInt(cursor.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID"))+"  "+
                         " where amp.list_passes.id=" + cursor.getString(cursor.getColumnIndex("ampp_id")));
                 System.out.println(psUpdaetInPostgreSQL.toString());
                 psUpdaetInPostgreSQL.execute();
