@@ -39,12 +39,15 @@ public class ConnectionToPostgreSQL extends AsyncTask {
             while (cursor.moveToNext()) {
                 //Внесение информации об обратной синхронизации
                 psUpdaetInPostgreSQL = con.prepareStatement("update amp.list_passes set" +
-                        " pass_in_date=to_date(" + GetstrWithForging(GetDateRussiaFormat(cursor.getString(cursor.getColumnIndex("ampp_PASSED_IN_DATE")))) + ",'dd.mm.yyyy')," +
-                        " pass_out_date=to_date(" + GetstrWithForging(GetDateRussiaFormat(cursor.getString(cursor.getColumnIndex("ampp_PASSED_OUT_DATE")))) + ",'dd.mm.yyyy') " +
+                        " pass_in_date=" + GetstrWithForging(cursor.getString(cursor.getColumnIndex("ampp_PASSED_IN_DATE"))) +" ,"+
+                        " pass_out_date=" + GetstrWithForging(cursor.getString(cursor.getColumnIndex("ampp_PASSED_OUT_DATE"))) +", "+
+                        " pass_watch_in=" +cursor.getString(cursor.getColumnIndex("ampp_PASSED_IN_CONTROL_POINT_ID"))+", "+
+                        " pass_watch_out="+cursor.getString(cursor.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID"))+", "+
                         " where amp.list_passes.id=" + cursor.getString(cursor.getColumnIndex("ampp_id")));
+                System.out.println(psUpdaetInPostgreSQL.toString());
                 psUpdaetInPostgreSQL.execute();
             }
-            // DriverManager.setLoginTimeout(1);
+
 
             //Получение информации
             stmtListPasses = con.createStatement();
@@ -83,9 +86,12 @@ public class ConnectionToPostgreSQL extends AsyncTask {
     }
 
     private String GetDateRussiaFormat(String str) {
+        System.out.println(str);
+        String tmp=str;
         if (!str.equals("null"))
-            str = str.substring(8, 10) + "." + str.substring(5, 7) + "." + str.substring(0, 4);
-        return str;
+            tmp = str.substring(8, 10) + "." + str.substring(5, 7) + "." + str.substring(0, 4);
+        System.out.println(tmp);
+        return tmp;
     }
 }
 

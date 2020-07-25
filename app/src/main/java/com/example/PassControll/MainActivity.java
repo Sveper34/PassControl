@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(brbarCode);
         unregisterReceiver(brCharge);
     }
-
+    
     public void bOpenContentOnClick(View view) {
         navController.navigate(R.id.action_nav_home_to_nav_Content);
     }
