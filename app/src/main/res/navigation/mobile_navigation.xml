@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_nav_Content_to_settingsActivity"
             app:destination="@id/nav_settingsActivity" />
+        <action
+            android:id="@+id/action_nav_Content_to_nav_home"
+            app:destination="@id/nav_home" />
     </fragment>
     <activity
         android:id="@+id/nav_settingsActivity"

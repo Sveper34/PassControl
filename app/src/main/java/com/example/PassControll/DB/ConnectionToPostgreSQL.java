@@ -36,6 +36,7 @@ public class ConnectionToPostgreSQL extends AsyncTask {
             //Test
             //con = DriverManager.getConnection("jdbc:postgresql://"+IpAdrressConection+"/dev", "postgres", "123456789");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
             con = DriverManager.getConnection("jdbc:postgresql://" + IpAdrressConection + ":15432/dev", "user_android", "user_android");//, "plan_emp3_test", "plan_emp3_test");// проброс портов
+            //con=DriverManager.getConnection("jdbc:postgresql://192.168.42.154:15432/dev", "postgres", "123456789");
             while (cursor.moveToNext()) {
                 //Внесение информации об обратной синхронизации
                 psUpdaetInPostgreSQL = con.prepareStatement("update amp.list_passes set" +
@@ -47,8 +48,6 @@ public class ConnectionToPostgreSQL extends AsyncTask {
                 System.out.println(psUpdaetInPostgreSQL.toString());
                 psUpdaetInPostgreSQL.execute();
             }
-
-
             //Получение информации
             stmtListPasses = con.createStatement();
             stmtListPassesContent = con.createStatement();
@@ -59,9 +58,9 @@ public class ConnectionToPostgreSQL extends AsyncTask {
                     "                    left join amp.v_user_list on amp.v_user_list.id=amp.list_passes.pass_convoy \n" +
                     "                    left join amp.manual_car on amp.manual_car.id=amp.list_passes.manual_car_id where  amp.list_passes.pass_accept=true \n" +
                     "                    and ( " +
-                    "                    case when amp.list_passes.pass_type=1 and  amp.list_passes.pass_in_date is null then 1 \n" +
-                    "                    when amp.list_passes.pass_type=2 and  amp.list_passes.pass_out_date is null  then 1\n" +
-                    "                    when amp.list_passes.pass_type=3 and (amp.list_passes.pass_in_date is null or amp.list_passes.pass_out_date is null) then 1 \n" +
+                    "                    case when amp.list_passes.pass_type=0 and  amp.list_passes.pass_in_date is null then 1 \n" +
+                    "                    when amp.list_passes.pass_type=1 and  amp.list_passes.pass_out_date is null  then 1\n" +
+                    "                    when amp.list_passes.pass_type=2 and (amp.list_passes.pass_in_date is null or amp.list_passes.pass_out_date is null) then 1 \n" +
                     "                    else 0 " +
                     "                 end )=1;");
             RsListPassesContent = stmtListPassesContent.executeQuery("select amp.list_passes_content.*,amp.system_unit.naimei as amppc_UNIT from amp.list_passes_content \n" +

@@ -1,21 +1,15 @@
 package com.example.PassControll;
 
-import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.BatteryManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
@@ -26,7 +20,6 @@ import com.example.PassControll.DB.ConnectionToPostgreSQL;
 import com.example.PassControll.DB.DBHelper;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -39,10 +32,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import static android.os.BatteryManager.BATTERY_PLUGGED_USB;
@@ -62,9 +51,12 @@ public class MainActivity extends AppCompatActivity {
     public ConnectionToPostgreSQL synchronizationPostgresql;
     public static Integer Idpass;//id пропуска
     public boolean isCharging = false;// проверка на зарядку
+    public int FlagOpen;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -81,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
+        FlagOpen = 1;
         //Сканирование Штрих кодов
         brbarCode = new BroadcastReceiver() {
             @Override
@@ -100,46 +92,46 @@ public class MainActivity extends AppCompatActivity {
                 TextView tvAttendant = (TextView) findViewById(R.id.tvAttendant);
                 TextView tvcar = (TextView) findViewById(R.id.tvCar);
                 Button btContent = (Button) findViewById(R.id.bOpenContent);
+                if (tvNumberDate != null) {
+                    Cursor cursor = Database.rawQuery("select * from amp_pass where ampp_id='" + barcode.trim() + "'", null);
+                    if (cursor.moveToNext()) {
 
-                Cursor cursor = Database.rawQuery("select * from amp_pass where ampp_id='" + barcode.trim() + "'", null);
-                if (cursor.moveToNext()) {
-                    String StrDate = cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE"));
-                    StrDate = StrDate.substring(8, 10) + "." + StrDate.substring(5, 7) + "." + StrDate.substring(0, 4);//Преобразование даты путем обрезания строки
+                        String StrDate = cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE"));
+                        StrDate = StrDate.substring(8, 10) + "." + StrDate.substring(5, 7) + "." + StrDate.substring(0, 4);//Преобразование даты путем обрезания строки
 
-                    //Создание костомизированного TextView текста
-                    SpannableString NewUnderLineString = new SpannableString("Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX")) + " от " + StrDate);
-                    NewUnderLineString.setSpan(new UnderlineSpan(), 9, 9+cursor.getString(cursor.getColumnIndex("ampp_INDEX")).length(), 0);
-                    NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length()-StrDate.length(), NewUnderLineString.length(), 0);
-                    //Полностью сформированную строку закидываем на отображение
-                    //Строка с номером пропуска и датой пропуска
-                    tvNumberDate.setText(NewUnderLineString);//"Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX")) + " от " + StrDate);
-                    //формирование строки Откуда Куда)
-                    NewUnderLineString = new SpannableString("Откуда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")) + ". Куда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")));
-                    NewUnderLineString.setSpan(new UnderlineSpan(), 8, 8+cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")).length(), 0);
-                    NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length()-cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")).length(), NewUnderLineString.length(), 0);
-                    tvfromTo.setText(NewUnderLineString);
-                    //Формирование сопровождающего
-                    NewUnderLineString = new SpannableString("Сопровождающий: " + cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")));
-                    NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length()-cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")).length(), NewUnderLineString.length(), 0);
-                    tvAttendant.setText(NewUnderLineString);
-                    //формирование автомобиль
-                    NewUnderLineString = new SpannableString("Автомобиль: " + cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")));
-                    NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length()-cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")).length(), NewUnderLineString.length(), 0);
-                    tvcar.setText(NewUnderLineString);
+                        //Создание костомизированного TextView текста
+                        SpannableString NewUnderLineString = new SpannableString("Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX")) + " от " + StrDate);
+                        NewUnderLineString.setSpan(new UnderlineSpan(), 9, 9 + cursor.getString(cursor.getColumnIndex("ampp_INDEX")).length(), 0);
+                        NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length() - StrDate.length(), NewUnderLineString.length(), 0);
+                        //Полностью сформированную строку закидываем на отображение
+                        //Строка с номером пропуска и датой пропуска
+                        tvNumberDate.setText(NewUnderLineString);//"Пропуск №" + cursor.getString(cursor.getColumnIndex("ampp_INDEX")) + " от " + StrDate);
+                        //формирование строки Откуда Куда)
+                        NewUnderLineString = new SpannableString("Откуда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")) + ". Куда: " + cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")));
+                        NewUnderLineString.setSpan(new UnderlineSpan(), 8, 8 + cursor.getString(cursor.getColumnIndex("ampp_PLACE_FROM")).length(), 0);
+                        NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length() - cursor.getString(cursor.getColumnIndex("ampp_PLACE_TO")).length(), NewUnderLineString.length(), 0);
+                        tvfromTo.setText(NewUnderLineString);
+                        //Формирование сопровождающего
+                        NewUnderLineString = new SpannableString("Сопровождающий: " + cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")));
+                        NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length() - cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")).length(), NewUnderLineString.length(), 0);
+                        tvAttendant.setText(NewUnderLineString);
+                        //формирование автомобиль
+                        NewUnderLineString = new SpannableString("Автомобиль: " + cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")));
+                        NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length() - cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")).length(), NewUnderLineString.length(), 0);
+                        tvcar.setText(NewUnderLineString);
 
-                    btContent.setVisibility(View.VISIBLE);
-                    Idpass = cursor.getInt(cursor.getColumnIndex("ampp_id"));
-                } else {
-                    tvNumberDate.setText("");
-                    tvfromTo.setText("");
-                    tvAttendant.setText("");
-                    tvcar.setText("");
-                    btContent.setVisibility(View.INVISIBLE);
-                    Toast.makeText(MainActivity.this, "Пропуск не найден", Toast.LENGTH_SHORT).show();
+                        btContent.setVisibility(View.VISIBLE);
+                        Idpass = cursor.getInt(cursor.getColumnIndex("ampp_id"));
+                    } else {
+                        tvNumberDate.setText("");
+                        tvfromTo.setText("");
+                        tvAttendant.setText("");
+                        tvcar.setText("");
+                        btContent.setVisibility(View.INVISIBLE);
+                        Toast.makeText(MainActivity.this, "Пропуск не найден", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
-
-
         };
         brCharge = new BroadcastReceiver() {
             @Override
@@ -237,6 +229,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        IntentFilter ifBattaryChanged = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(brCharge, ifBattaryChanged);
+        //Штрих Код
+        IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
+        registerReceiver(brbarCode, intFilt);
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -252,12 +255,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override // для выключения приложения
     protected void onStop() {
-        MainActivity.super.onStop();
         unregisterReceiver(brbarCode);
         unregisterReceiver(brCharge);
+        MainActivity.super.onStop();
     }
 
     public void bOpenContentOnClick(View view) {
+        FlagOpen = 2;
         navController.navigate(R.id.action_nav_home_to_nav_Content);
     }
 
