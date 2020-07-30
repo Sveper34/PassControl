@@ -63,21 +63,27 @@
 
     <Button
         android:id="@+id/btExport"
-        android:layout_width="wrap_content"
+        android:layout_width="207dp"
         android:layout_height="44dp"
+        android:background="#6200EE"
         android:onClick="ButtonExportOnClick"
         android:text="Вывоз ТМЦ"
+        android:textColor="@color/cardview_light_background"
         android:textSize="12sp"
         android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/btImport"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
 
     <Button
         android:id="@+id/btImport"
-        android:layout_width="wrap_content"
-        android:layout_height="47dp"
+        android:layout_width="203dp"
+        android:layout_height="46dp"
+        android:background="#6200EE"
         android:onClick="ButtonImportOnClick"
         android:text="Ввоз ТМЦ"
+        android:textColor="@color/cardview_light_background"
         android:textSize="12sp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
