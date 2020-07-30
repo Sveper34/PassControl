@@ -49,22 +49,32 @@ public class ContentFragment extends Fragment {
         while (getInfoButton.moveToNext()) {
             int type = getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass"));
             if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 0) {
-                btImport.setText("Ввоз ТМЦ");
+                if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != "")
+                    btImport.setText("Ввоз ТМЦ");
+                else
+                    btImport.setText("Внос ТМЦ");
                 btImport.setVisibility(View.VISIBLE);
                 btExport.setVisibility(View.INVISIBLE);
             }
             if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 1) {//внос
-                btExport.setText("Вывоз ТМЦ");
+                if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != "")
+                    btExport.setText("Вывоз ТМЦ");
+                else btExport.setText("Вынос ТМЦ");
                 btExport.setVisibility(View.VISIBLE);
                 btImport.setVisibility(View.INVISIBLE);
             }
             if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 2) {//вынос внос
                 if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID")) <= 0) {
-                    btExport.setText("Вывоз ТМЦ");
+                    if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != "")
+                        btExport.setText("Вывоз ТМЦ");
+                    else btExport.setText("Вынос ТМЦ");
                     btImport.setVisibility(View.INVISIBLE);
                     btExport.setVisibility(View.VISIBLE);
                 } else {
-                    btImport.setText("Ввоз ТМЦ");
+                    if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != "")
+                        btImport.setText("Ввоз ТМЦ");
+                    else
+                        btImport.setText("Внос ТМЦ");
                     btImport.setVisibility(View.VISIBLE);
                     btExport.setVisibility(View.INVISIBLE);
                 }
