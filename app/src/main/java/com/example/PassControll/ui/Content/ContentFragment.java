@@ -49,7 +49,7 @@ public class ContentFragment extends Fragment {
         while (getInfoButton.moveToNext()) {
             int type = getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass"));
             if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 0) {
-                if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != "")
+                if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != null)
                     btImport.setText("Ввоз ТМЦ");
                 else
                     btImport.setText("Внос ТМЦ");
@@ -57,7 +57,7 @@ public class ContentFragment extends Fragment {
                 btExport.setVisibility(View.INVISIBLE);
             }
             if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 1) {//внос
-                if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != "")
+                if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != null)
                     btExport.setText("Вывоз ТМЦ");
                 else btExport.setText("Вынос ТМЦ");
                 btExport.setVisibility(View.VISIBLE);
@@ -65,13 +65,13 @@ public class ContentFragment extends Fragment {
             }
             if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 2) {//вынос внос
                 if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID")) <= 0) {
-                    if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != "")
+                    if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != null)
                         btExport.setText("Вывоз ТМЦ");
                     else btExport.setText("Вынос ТМЦ");
                     btImport.setVisibility(View.INVISIBLE);
                     btExport.setVisibility(View.VISIBLE);
                 } else {
-                    if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != "")
+                    if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != null)
                         btImport.setText("Ввоз ТМЦ");
                     else
                         btImport.setText("Внос ТМЦ");
@@ -106,21 +106,8 @@ public class ContentFragment extends Fragment {
             }
             tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_INVENTORY_NUMBER")));
             tr.addView(tvCell);
-//
-//            tvCell = new TextView(getActivity());
-//            tvCell.setTextSize(18);
-//            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-//            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_AMOUNT")));
-//            tr.addView(tvCell);
-//
-//            tvCell = new TextView(getActivity());
-//            tvCell.setTextSize(18);
-//            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-//            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_UNIT")));
-//            tr.addView(tvCell);
-            //добавление строки
+
             tl.addView(tr);
         }
-        // or  (ImageView) view.findViewById(R.id.foo);
     }
 }

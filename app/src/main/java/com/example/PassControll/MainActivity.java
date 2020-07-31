@@ -43,9 +43,10 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver brbarCode;
     private BroadcastReceiver brCharge;
     public String barcode;
+    private BackgroundServiceUpdate backgroundService;
     //    public final static String BROADCAST_ACTION = "com.xcheng.scanner.action.BARCODE_DECODING_BROADCAST";
     public final static String BROADCAST_ACTION = "android.intent.ACTION_DECODE_DATA";
-    DBHelper dbHelper = new DBHelper(this);
+    public DBHelper dbHelper = new DBHelper(this);
     public static SQLiteDatabase Database;
     public NavController navController;
     public ConnectionToPostgreSQL synchronizationPostgresql;
@@ -56,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -86,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
 //                barcode = intent.getStringExtra("EXTRA_BARCODE_DECODING_DATA");
 //                type = intent.getStringExtra("barcode_string");
                 barcode = intent.getStringExtra("barcode_string");
-//                System.out.println(barcode);
                 TextView tvNumberDate = (TextView) findViewById(R.id.tvNumberDate);
                 TextView tvfromTo = (TextView) findViewById(R.id.tvFromTo);
                 TextView tvAttendant = (TextView) findViewById(R.id.tvAttendant);
@@ -208,11 +206,9 @@ public class MainActivity extends AppCompatActivity {
                         //  Toast.makeText(MainActivity.this, synchronizationPostgresql.get().toString(), Toast.LENGTH_SHORT).show();
                     } catch (ExecutionException e) {
                         //Button bt=findViewById(R.id.button);
-                        bt.setText(e.toString());
                         e.printStackTrace();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                        bt.setText(e.toString());
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -226,6 +222,10 @@ public class MainActivity extends AppCompatActivity {
         //Штрих Код
         IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
         registerReceiver(brbarCode, intFilt);
+
+        backgroundService=new BackgroundServiceUpdate();
+        backgroundService.onCreate();
+        backgroundService.someTask();
     }
 
     @Override
@@ -288,4 +288,6 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(inttent);
         navController.navigate(R.id.action_nav_home_to_allPassesContentFragment);
     }
+
+
 }
