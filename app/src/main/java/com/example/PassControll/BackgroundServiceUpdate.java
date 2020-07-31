@@ -23,7 +23,7 @@ class BackgroundServiceUpdate extends Service {
     private ConnectionToPostgreSQL synchronizationPostgresql;
 
     private DBHelper dbHelper = new DBHelper(this);
-    final String LOG_TAG = "myLogs";
+//    final String LOG_TAG = "myLogs";
 
 
     public void onCreate() {
@@ -113,11 +113,11 @@ class BackgroundServiceUpdate extends Service {
                     //  Toast.makeText(MainActivity.this, synchronizationPostgresql.get().toString(), Toast.LENGTH_SHORT).show();
                 } catch (ExecutionException e) {
                     //Button bt=findViewById(R.id.button);
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 }
             }
         };

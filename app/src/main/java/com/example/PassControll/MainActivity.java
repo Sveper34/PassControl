@@ -206,11 +206,11 @@ public class MainActivity extends AppCompatActivity {
                         //  Toast.makeText(MainActivity.this, synchronizationPostgresql.get().toString(), Toast.LENGTH_SHORT).show();
                     } catch (ExecutionException e) {
                         //Button bt=findViewById(R.id.button);
-                        e.printStackTrace();
+//                        e.printStackTrace();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+//                        e.printStackTrace();
                     } catch (SQLException e) {
-                        e.printStackTrace();
+//                        e.printStackTrace();
                     }
                 }
             }

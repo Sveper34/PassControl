@@ -72,7 +72,7 @@ public class ConnectionToPostgreSQL extends AsyncTask {
             Result[2] = RsWatch;
             con.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
 
 
