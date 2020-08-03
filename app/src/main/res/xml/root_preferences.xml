@@ -8,6 +8,12 @@
             android:entryValues="@array/reply_entries"
             android:key="list_preference_1"
             android:title="Вахта" />
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/reply_values"
+            android:entryValues="@array/reply_values"
+            android:key="list_preference_1"
+            android:title="List preference" />
     </PreferenceCategory>
 
 </PreferenceScreen>

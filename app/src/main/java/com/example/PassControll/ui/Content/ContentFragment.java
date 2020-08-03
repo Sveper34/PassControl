@@ -48,7 +48,7 @@ public class ContentFragment extends Fragment {
         Cursor getInfoButton = MainActivity.Database.rawQuery("Select * from amp_pass where ampp_ID=" + MainActivity.Idpass + ";", null);
         while (getInfoButton.moveToNext()) {
             int type = getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass"));
-            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 0) {
+            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 1) {
                 if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != null)
                     btImport.setText("Ввоз ТМЦ");
                 else
@@ -56,7 +56,7 @@ public class ContentFragment extends Fragment {
                 btImport.setVisibility(View.VISIBLE);
                 btExport.setVisibility(View.INVISIBLE);
             }
-            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 1) {//внос
+            if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 0) {//внос
                 if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != null)
                     btExport.setText("Вывоз ТМЦ");
                 else btExport.setText("Вынос ТМЦ");
@@ -64,19 +64,20 @@ public class ContentFragment extends Fragment {
                 btImport.setVisibility(View.INVISIBLE);
             }
             if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 2) {//вынос внос
-                if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID")) <= 0) {
-                    if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != null)
-                        btExport.setText("Вывоз ТМЦ");
-                    else btExport.setText("Вынос ТМЦ");
-                    btImport.setVisibility(View.INVISIBLE);
-                    btExport.setVisibility(View.VISIBLE);
-                } else {
+                if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_IN_CONTROL_POINT_ID")) <= 0) {
                     if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != null)
                         btImport.setText("Ввоз ТМЦ");
                     else
                         btImport.setText("Внос ТМЦ");
                     btImport.setVisibility(View.VISIBLE);
                     btExport.setVisibility(View.INVISIBLE);
+                } else {
+                    if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != null)
+                        btExport.setText("Вывоз ТМЦ");
+                    else btExport.setText("Вынос ТМЦ");
+                    btImport.setVisibility(View.INVISIBLE);
+                    btExport.setVisibility(View.VISIBLE);
+
                 }
 
             }

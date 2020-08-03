@@ -10,6 +10,7 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
@@ -40,16 +41,16 @@ public class MainActivity extends AppCompatActivity {
 
     //Приватные переменные
     private AppBarConfiguration mAppBarConfiguration;
-    private BroadcastReceiver brbarCode;
-    private BroadcastReceiver brCharge;
-    public String barcode;
-    private BackgroundServiceUpdate backgroundService;
+    private BroadcastReceiver brbarCode;//Прием широковешательных сообщений от сканирование штрихкода
+    private BroadcastReceiver brCharge;//Прием широковешательных сообщений зарядки устройства
+    public String barcode; //Штрих код
+    private BackgroundServiceUpdate backgroundService;//Сервис фонового обновления данных
     //    public final static String BROADCAST_ACTION = "com.xcheng.scanner.action.BARCODE_DECODING_BROADCAST";
-    public final static String BROADCAST_ACTION = "android.intent.ACTION_DECODE_DATA";
-    public DBHelper dbHelper = new DBHelper(this);
-    public static SQLiteDatabase Database;
-    public NavController navController;
-    public ConnectionToPostgreSQL synchronizationPostgresql;
+    public final static String BROADCAST_ACTION = "android.intent.ACTION_DECODE_DATA";//Широковешательное сообщение для сканера Urovo dt40
+    public DBHelper dbHelper = new DBHelper(this); // Класс для работы с базой данных
+    public static SQLiteDatabase Database; //База данных
+    public NavController navController;// Боковое меню приложения
+    public ConnectionToPostgreSQL synchronizationPostgresql; //Класс для синхронизации данных с postgresql
     public static Integer Idpass;//id пропуска
     public boolean isCharging = false;// проверка на зарядку
     public int FlagOpen;
@@ -289,5 +290,8 @@ public class MainActivity extends AppCompatActivity {
         navController.navigate(R.id.action_nav_home_to_allPassesContentFragment);
     }
 
-
+    public void bSettingsOnClick(View view) {
+        Intent inttent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(inttent);
+    }
 }
