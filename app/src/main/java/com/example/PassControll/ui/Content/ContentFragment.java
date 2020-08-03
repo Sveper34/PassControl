@@ -72,12 +72,13 @@ public class ContentFragment extends Fragment {
                     btImport.setVisibility(View.VISIBLE);
                     btExport.setVisibility(View.INVISIBLE);
                 } else {
-                    if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != null)
-                        btExport.setText("Вывоз ТМЦ");
-                    else btExport.setText("Вынос ТМЦ");
-                    btImport.setVisibility(View.INVISIBLE);
-                    btExport.setVisibility(View.VISIBLE);
-
+                    if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID")) <= 0) {
+                        if (getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")) != null)
+                            btExport.setText("Вывоз ТМЦ");
+                        else btExport.setText("Вынос ТМЦ");
+                        btImport.setVisibility(View.INVISIBLE);
+                        btExport.setVisibility(View.VISIBLE);
+                    }
                 }
 
             }
