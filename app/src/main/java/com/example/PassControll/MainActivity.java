@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         final NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_Content, R.id.nav_settingsActivity, R.id.nav_allPassesContentFragment
+                R.id.nav_home, R.id.nav_Content, R.id.nav_allPassesContentFragment, R.id.nav_settingsActivity
         )
                 .setDrawerLayout(drawer)
                 .build();
@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
     public void ButtonImportOnClick(View view) {
         Button bt = (Button) view;
         bt = findViewById(R.id.btImport);
-        if (bt.getText().toString().equals("Ввоз ТМЦ"))
+        if (bt.getText().toString().toLowerCase().equals("ввоз тмц")||bt.getText().toString().toLowerCase().equals("внос тмц"))
             dbHelper.UpdateAmpPassImport(Database, false);
         else dbHelper.UpdateAmpPassImport(Database, true);
         navController.navigateUp();
@@ -278,15 +278,13 @@ public class MainActivity extends AppCompatActivity {
     public void ButtonExportOnClick(View view) {
         Button bt = (Button) view;
         bt = findViewById(R.id.btExport);
-        if (bt.getText().toString().equals("Вывоз ТМЦ"))
+        if (bt.getText().toString().toLowerCase().equals("вывоз тмц")||bt.getText().toString().toLowerCase().equals("вынос тмц"))
             dbHelper.UpdateAmpPassExport(Database, false);
         else dbHelper.UpdateAmpPassExport(Database, true);
         navController.navigateUp();
     }
 
     public void ButtonAllPassesOnClick(View view) {
-//        Intent inttent = new Intent(MainActivity.this, SettingsActivity.class);
-//        startActivity(inttent);
         navController.navigate(R.id.action_nav_home_to_allPassesContentFragment);
     }
 

@@ -11,14 +11,14 @@
         <item
             android:id="@+id/nav_Content"
             android:icon="@drawable/ic_menu_content"
-            android:title="@string/menu_gallery"
+            android:title="@string/menu_content"
             android:visible="false" />
         <item
-            android:id="@+id/nav_settings"
+            android:id="@+id/nav_settingsActivity"
             android:icon="@android:drawable/ic_menu_manage"
             android:title="@string/nav_settings" />
         <item
-            android:id="@+id/nav_AllPasses"
+            android:id="@+id/nav_allPassesContentFragment"
             android:icon="?attr/actionModeCopyDrawable"
             android:title="@string/nav_AllPasses" />
     </group>

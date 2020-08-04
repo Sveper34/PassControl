@@ -49,7 +49,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "ampp_PASSED_IN_CONTROL_POINT_ID integer," + //- число, ID вахты, через которую ввезли/внесли ТМЦ;
                 "ampp_PASSED_IN_DATE text," + //дата пропуска ТМЦ через вахту на ввоз/внос;
                 "ampp_PASSED_OUT_CONTROL_POINT_ID integer," + //число, ID вахты, через которую вывезли/вынесли ТМЦ;
-                "ampp_PASSED_OUT_DATE text, "+ //дата пропуска ТМЦ через вахту на вывоз/вынос;
+                "ampp_PASSED_OUT_DATE text, " + //дата пропуска ТМЦ через вахту на вывоз/вынос;
                 "ampp_type_pass integer)");
 
         //состав пропуска
@@ -80,7 +80,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void UpdateAmpPassImport(SQLiteDatabase db, Boolean NeedNull) {
         Date currentDate = new Date(System.currentTimeMillis());// Форматирование времени как "день.месяц.год"
-        DateFormat dateFormat = new SimpleDateFormat("d.MM.yyyy", Locale.getDefault());
+        DateFormat dateFormat = new SimpleDateFormat("d.MM.yyyy H:m:s", Locale.getDefault());
         String dateText = dateFormat.format(currentDate);
         //Обновление параметров в бд
         ContentValues contentValues = new ContentValues();
@@ -88,12 +88,12 @@ public class DBHelper extends SQLiteOpenHelper {
         else
             contentValues.put("ampp_PASSED_IN_CONTROL_POINT_ID", 1);// добавить обращение к настройкам для получения фахты общества к которой привязан сканер
         contentValues.put("ampp_PASSED_IN_DATE", dateFormat.format(currentDate));
-        db.update("amp_pass",  contentValues, "ampp_id=" + MainActivity.Idpass, null);
+        db.update("amp_pass", contentValues, "ampp_id=" + MainActivity.Idpass, null);
     }
 
     public void UpdateAmpPassExport(SQLiteDatabase db, Boolean NeedNull) {
         Date currentDate = new Date();// Форматирование времени как "день.месяц.год"
-        DateFormat dateFormat = new SimpleDateFormat("d.MM.yyyy", Locale.getDefault());
+        DateFormat dateFormat = new SimpleDateFormat("d.MM.yyyy H:m:s", Locale.getDefault());
         String dateText = dateFormat.format(currentDate);
         //Обновление параметров в бд
         ContentValues contentValues = new ContentValues();

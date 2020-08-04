@@ -14,21 +14,18 @@
             android:id="@+id/action_nav_home_to_nav_Content"
             app:destination="@id/nav_Content" />
         <action
-            android:id="@+id/action_nav_home_to_settingsActivity"
-            app:destination="@id/nav_settingsActivity" />
-        <action
             android:id="@+id/action_nav_home_to_allPassesContentFragment"
             app:destination="@id/nav_allPassesContentFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_settingsActivity"
+            app:destination="@id/nav_settingsActivity" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_Content"
         android:name="com.example.PassControll.ui.Content.ContentFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_content"
         tools:layout="@layout/fragment_content" >
-        <action
-            android:id="@+id/action_nav_Content_to_settingsActivity"
-            app:destination="@id/nav_settingsActivity" />
         <action
             android:id="@+id/action_nav_Content_to_nav_home"
             app:destination="@id/nav_home" />
@@ -42,10 +39,6 @@
         android:id="@+id/nav_allPassesContentFragment"
         android:name="com.example.PassControll.AllPassesActivity.AllPassesContentFragment"
         android:label="allpassesfragment_content"
-        tools:layout="@layout/allpassesfragment_content" >
-        <action
-            android:id="@+id/action_allPassesContentFragment_to_nav_settingsActivity"
-            app:destination="@id/nav_settingsActivity" />
-    </fragment>
+        tools:layout="@layout/allpassesfragment_content" />
 
 </navigation>

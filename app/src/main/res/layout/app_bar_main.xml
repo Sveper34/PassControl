@@ -23,5 +23,12 @@
     <include
         android:id="@+id/HomeContent"
         layout="@layout/content_main" />
+<!--    <include-->
+<!--        android:id="@+id/settings"-->
+<!--        layout="@layout/content_main" />-->
+<!--    <include-->
+<!--        android:id="@+id/HomeContent"-->
+<!--        layout="@layout/content_main" />-->
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
