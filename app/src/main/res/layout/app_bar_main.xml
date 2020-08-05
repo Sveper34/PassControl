@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -23,7 +24,8 @@
     <include
         android:id="@+id/HomeContent"
         layout="@layout/content_main" />
-<!--    <include-->
+
+    <!--    <include-->
 <!--        android:id="@+id/settings"-->
 <!--        layout="@layout/content_main" />-->
 <!--    <include-->

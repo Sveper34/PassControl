@@ -51,7 +51,7 @@
                             android:layout_width="93dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="@string/AllPassesInventoryNumber"
+                            android:text="@string/AllPassesAttendantFIO"
                             android:textAlignment="center" />
 
                         <TextView
@@ -59,7 +59,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="@string/AllPassesCnt"
+                            android:text="@string/AllPassesfrom"
                             android:textAlignment="center" />
 
                         <TextView
@@ -67,7 +67,7 @@
                             android:layout_width="52dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="@string/AllPassesUnit"
+                            android:text="@string/AllPassesto"
                             android:textAlignment="center" />
                     </TableRow>
 

@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         brCharge = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+
                 int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
                 isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                         status == BatteryManager.BATTERY_STATUS_FULL;

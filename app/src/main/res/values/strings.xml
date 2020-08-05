@@ -22,8 +22,8 @@
     <string name="sync_title">Синхронизация</string>
     <string name="WatchListTitle">Вахта:</string>
     <string name="AllPassesIndexTitle">№ П/п</string>
-    <string name="AllPassesPosTitle">Наименование позиции</string>
-    <string name="AllPassesInventoryNumber">Инв №</string>
-    <string name="AllPassesCnt">Кол-во</string>
-    <string name="AllPassesUnit">Е.И</string>
+    <string name="AllPassesPosTitle">Дата соглосования</string>
+    <string name="AllPassesAttendantFIO">ФИО сопровождающего</string>
+    <string name="AllPassesfrom">Откуда</string>
+    <string name="AllPassesto">Куда</string>
 </resources>

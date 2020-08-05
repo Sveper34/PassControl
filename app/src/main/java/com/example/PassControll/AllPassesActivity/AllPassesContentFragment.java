@@ -47,10 +47,12 @@ public class AllPassesContentFragment extends Fragment {
             tvCell.setText(cursor.getString(cursor.getColumnIndex("ampp_INDEX")));
             tr.addView(tvCell);
 
+            String StrDate = cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE"));
+            StrDate = StrDate.substring(8, 10) + "." + StrDate.substring(5, 7) + "." + StrDate.substring(0, 4);//Преобразование даты путем обрезания строки
             tvCell = new TextView(getActivity());
             tvCell.setTextSize(18);
             tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            tvCell.setText(cursor.getString(cursor.getColumnIndex("ampp_AGREED_DATE")));
+            tvCell.setText(StrDate);
             tr.addView(tvCell);
 
             tvCell = new TextView(getActivity());

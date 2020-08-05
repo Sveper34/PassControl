@@ -34,19 +34,11 @@
         android:id="@+id/nav_allPassesContentFragment"
         android:name="com.example.PassControll.AllPassesActivity.AllPassesContentFragment"
         android:label="Актуальные пропуска"
-        tools:layout="@layout/allpassesfragment_content" >
-        <action
-            android:id="@+id/action_nav_allPassesContentFragment_to_nav_home"
-            app:destination="@id/nav_home" />
-    </fragment>
+        tools:layout="@layout/allpassesfragment_content" />
     <fragment
         android:id="@+id/nav_settingsFragment"
         android:name="com.example.PassControll.ui.Settings.SettingsFragment"
         android:label="Настройки"
-        tools:layout="@layout/fragment_settings" >
-        <action
-            android:id="@+id/action_settingsFragment_to_nav_home"
-            app:destination="@id/nav_home" />
-    </fragment>
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>
