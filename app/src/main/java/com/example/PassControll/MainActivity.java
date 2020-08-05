@@ -35,6 +35,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import static android.os.BatteryManager.BATTERY_PLUGGED_USB;
@@ -134,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         btContent.setVisibility(View.INVISIBLE);
                         Toast.makeText(MainActivity.this, "Пропуск не найден", Toast.LENGTH_SHORT).show();
                     }
+                    cursor.close();
                 }
             }
         };
@@ -163,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                         processGetIppaddr.waitFor();
                         processGetIppaddr.destroy();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                    //    e.printStackTrace();
                     }
                     synchronizationPostgresql.IpAdrressConection = ipAddr;
                     Cursor cursor = Database.rawQuery("select amp_pass.* from amp_pass ", null);
@@ -272,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         Button bt = (Button) view;
         bt = findViewById(R.id.btImport);
-        if (bt.getText().toString().toLowerCase().equals("ввоз тмц") || bt.getText().toString().toLowerCase().equals("внос тмц"))
+        if (bt.getText().toString().toLowerCase(Locale.ROOT).equals("ввоз тмц") || bt.getText().toString().toLowerCase(Locale.ROOT).equals("внос тмц"))
             dbHelper.UpdateAmpPassImport(Database, false, settings.getInt("ANDROID_SYNC_WATCH", 0));
         //else dbHelper.UpdateAmpPassImport(Database, true,settings.getInt("ANDROID_SYNC_WATCH", 0));
         navController.navigateUp();
@@ -282,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         Button bt = (Button) view;
         bt = findViewById(R.id.btExport);
-        if (bt.getText().toString().toLowerCase().equals("вывоз тмц") || bt.getText().toString().toLowerCase().equals("вынос тмц"))
+        if (bt.getText().toString().toLowerCase(Locale.ROOT).equals("вывоз тмц") || bt.getText().toString().toLowerCase(Locale.ROOT).equals("вынос тмц"))
             dbHelper.UpdateAmpPassExport(Database, false, settings.getInt("ANDROID_SYNC_WATCH", 0));
         // else dbHelper.UpdateAmpPassExport(Database, true,settings.getInt("ANDROID_SYNC_WATCH", 0));
         navController.navigateUp();

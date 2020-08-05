@@ -51,6 +51,7 @@ public class SettingsFragment extends Fragment {
             listWatchid[i] = cuWatchList.getString(cuWatchList.getColumnIndex("ampw_ID"));
             i++;
         }
+        cuWatchList.close();
 
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, listWatch);

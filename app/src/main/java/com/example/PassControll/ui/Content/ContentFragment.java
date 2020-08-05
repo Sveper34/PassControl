@@ -86,6 +86,7 @@ public class ContentFragment extends Fragment {
 
             }
         }
+        getInfoButton.close();
         TableLayout tl = (TableLayout) getView().findViewById(R.id.TableContent);
         TextView tv = getView().findViewById(R.id.clTitle);
         Cursor cursor = MainActivity.Database.rawQuery("Select * from amp_pass_content where amppc_PASS_ID=" + MainActivity.Idpass + ";", null);
@@ -110,5 +111,6 @@ public class ContentFragment extends Fragment {
             tr.addView(tvCell);
             tl.addView(tr);
         }
+        cursor.close();
     }
 }

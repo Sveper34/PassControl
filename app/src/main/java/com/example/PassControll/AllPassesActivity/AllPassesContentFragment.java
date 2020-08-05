@@ -73,6 +73,7 @@ public class AllPassesContentFragment extends Fragment {
             //добавление строки
             tl.addView(tr);
         }
+        cursor.close();
         // or  (ImageView) view.findViewById(R.id.foo);
     }
 }

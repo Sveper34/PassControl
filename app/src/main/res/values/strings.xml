@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">Учет пропусков</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">ОАСПУ БИТ</string>
-    <string name="nav_header_subtitle">40-63 Рябцев Семен</string>
+    <string name="nav_header_subtitle">40–63 Рябцев Семен</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Настройки</string>
 
@@ -23,4 +21,9 @@
     <string name="ampp_number">№ П/п</string>
     <string name="sync_title">Синхронизация</string>
     <string name="WatchListTitle">Вахта:</string>
+    <string name="AllPassesIndexTitle">№ П/п</string>
+    <string name="AllPassesPosTitle">Наименование позиции</string>
+    <string name="AllPassesInventoryNumber">Инв №</string>
+    <string name="AllPassesCnt">Кол-во</string>
+    <string name="AllPassesUnit">Е.И</string>
 </resources>

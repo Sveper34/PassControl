@@ -37,21 +37,21 @@
                             android:layout_width="62dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="№ П/п" />
+                            android:text="@string/AllPassesIndexTitle" />
 
                         <TextView
                             android:id="@+id/clTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="Наименование позиции" />
+                            android:text="@string/AllPassesPosTitle" />
 
                         <TextView
                             android:id="@+id/clInventoryNumber"
                             android:layout_width="93dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="Инв №"
+                            android:text="@string/AllPassesInventoryNumber"
                             android:textAlignment="center" />
 
                         <TextView
@@ -59,7 +59,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="Кол-во"
+                            android:text="@string/AllPassesCnt"
                             android:textAlignment="center" />
 
                         <TextView
@@ -67,7 +67,7 @@
                             android:layout_width="52dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="Е.И"
+                            android:text="@string/AllPassesUnit"
                             android:textAlignment="center" />
                     </TableRow>
 
