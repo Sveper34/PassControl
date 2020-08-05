@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.BatteryManager;
@@ -13,6 +14,7 @@ import android.text.style.UnderlineSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -54,8 +57,9 @@ public class MainActivity extends AppCompatActivity {
     public static Integer Idpass;//id пропуска
     public boolean isCharging = false;// проверка на зарядку
     public int FlagOpen;
+    public ArrayAdapter<String> adapterWatch;
 
-
+    // SharedPreferences settings = getSharedPreferences("PreferencesName", MODE_PRIVATE);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,14 +70,14 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         final NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_Content, R.id.nav_allPassesContentFragment, R.id.nav_settingsActivity
+                R.id.nav_home, R.id.nav_Content, R.id.nav_allPassesContentFragment, R.id.nav_settingsFragment
         )
                 .setDrawerLayout(drawer)
                 .build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        FlagOpen = 1;
+
         //Сканирование Штрих кодов
         brbarCode = new BroadcastReceiver() {
             @Override
@@ -174,13 +178,13 @@ public class MainActivity extends AppCompatActivity {
                         if (RsListPasses[0] != null) {
                             dbHelper.ExecComandInDB(Database, "delete from amp_pass;");
                             while (RsListPasses[0].next()) {// пропуска
-                                dbHelper.ExecComandInDB(Database, "insert into amp_pass(ampp_id,ampp_INDEX,ampp_CREATE_USER_FIO,ampp_AGREED_DATE,ampp_PLACE_FROM,ampp_PLACE_TO,ampp_ATTENDANT_FIO,ampp_TRANSPORT_INFO,ampp_type_pass,ampp_PASSED_IN_DATE,ampp_PASSED_out_DATE)" +
+                                dbHelper.ExecComandInDB(Database, "insert into amp_pass(ampp_id,ampp_INDEX,ampp_CREATE_USER_FIO,ampp_AGREED_DATE,ampp_PLACE_FROM,ampp_PLACE_TO,ampp_ATTENDANT_FIO,ampp_TRANSPORT_INFO,ampp_type_pass,ampp_PASSED_IN_DATE,ampp_PASSED_out_DATE ,ampp_PASSED_IN_CONTROL_POINT_ID,ampp_PASSED_OUT_CONTROL_POINT_ID)" +
                                         "values(" + RsListPasses[0].getString("id") + ",'" + RsListPasses[0].getString("pass_number") + "'," +
                                         "'" + RsListPasses[0].getString("pass_create_user") + "','" + RsListPasses[0].getDate("pass_date") + "'," +
                                         "'" + RsListPasses[0].getString("pass_from") + "','" + RsListPasses[0].getString("pass_to").trim() + "'," +
                                         "'" + RsListPasses[0].getString("fio_convoy") + "','" + RsListPasses[0].getString("car") + "',"
                                         + RsListPasses[0].getInt("pass_type") + ",'" + RsListPasses[0].getDate("pass_in_date") +
-                                        "','" + RsListPasses[0].getDate("pass_out_date") + "') ; ");
+                                        "','" + RsListPasses[0].getDate("pass_out_date") + "'," + RsListPasses[0].getInt("pass_watch_in") + "," + RsListPasses[0].getInt("pass_watch_out") + ") ; ");
                             }
                         }
                         if (RsListPasses[1] != null) {
@@ -224,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
         registerReceiver(brbarCode, intFilt);
 
-        backgroundService=new BackgroundServiceUpdate();
+        backgroundService = new BackgroundServiceUpdate();
         backgroundService.onCreate();
         backgroundService.someTask();
     }
@@ -267,29 +271,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ButtonImportOnClick(View view) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         Button bt = (Button) view;
         bt = findViewById(R.id.btImport);
-        if (bt.getText().toString().toLowerCase().equals("ввоз тмц")||bt.getText().toString().toLowerCase().equals("внос тмц"))
-            dbHelper.UpdateAmpPassImport(Database, false);
-        else dbHelper.UpdateAmpPassImport(Database, true);
+        if (bt.getText().toString().toLowerCase().equals("ввоз тмц") || bt.getText().toString().toLowerCase().equals("внос тмц"))
+            dbHelper.UpdateAmpPassImport(Database, false, settings.getInt("ANDROID_SYNC_WATCH", 0));
+        //else dbHelper.UpdateAmpPassImport(Database, true,settings.getInt("ANDROID_SYNC_WATCH", 0));
         navController.navigateUp();
     }
 
     public void ButtonExportOnClick(View view) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         Button bt = (Button) view;
         bt = findViewById(R.id.btExport);
-        if (bt.getText().toString().toLowerCase().equals("вывоз тмц")||bt.getText().toString().toLowerCase().equals("вынос тмц"))
-            dbHelper.UpdateAmpPassExport(Database, false);
-        else dbHelper.UpdateAmpPassExport(Database, true);
+        if (bt.getText().toString().toLowerCase().equals("вывоз тмц") || bt.getText().toString().toLowerCase().equals("вынос тмц"))
+            dbHelper.UpdateAmpPassExport(Database, false, settings.getInt("ANDROID_SYNC_WATCH", 0));
+        // else dbHelper.UpdateAmpPassExport(Database, true,settings.getInt("ANDROID_SYNC_WATCH", 0));
         navController.navigateUp();
     }
 
-    public void ButtonAllPassesOnClick(View view) {
-        navController.navigate(R.id.action_nav_home_to_allPassesContentFragment);
-    }
-
-    public void bSettingsOnClick(View view) {
-        Intent inttent = new Intent(MainActivity.this, SettingsActivity.class);
-        startActivity(inttent);
-    }
 }

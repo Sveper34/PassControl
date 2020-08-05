@@ -1,5 +1,7 @@
 package com.example.PassControll.ui.Content;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,13 +29,13 @@ public class ContentFragment extends Fragment {
 
     private ContentViewModel contentViewModel;
     private Cursor cur;
-
+    SharedPreferences preferences;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         contentViewModel =
                 ViewModelProviders.of(this).get(ContentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_content, container, false);
-        DBHelper DBHelper = new DBHelper(getActivity());
+        preferences=this.getActivity().getSharedPreferences("ANDROID_SYNC_WATCH", Context.MODE_PRIVATE);
 
         return root;
     }

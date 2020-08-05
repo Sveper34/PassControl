@@ -13,24 +13,14 @@
 
     <string name="home_second">Home Second</string>
     <string name="title_activity_settings">Settings</string>
-
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
     <string name="sync_header">Синхронизация</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="nav_settings">Настройки</string>
     <string name="nav_AllPasses">Все пропуска</string>
     <string name="InventoryNumberText">Инв. №</string>
     <string name="AMPP_titlle">Наименование позиции</string>
     <string name="ampp_number">№ П/п</string>
+    <string name="sync_title">Синхронизация</string>
+    <string name="WatchListTitle">Вахта:</string>
 </resources>

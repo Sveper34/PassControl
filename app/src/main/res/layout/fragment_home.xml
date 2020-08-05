@@ -86,7 +86,6 @@
         android:background="#6200EE"
         android:onClick="bOpenContentOnClick"
         android:text="Состав пропуска"
-        android:textAlignment="center"
         android:textColor="@color/cardview_light_background"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"

@@ -80,13 +80,13 @@ class BackgroundServiceUpdate extends Service {
                     if (RsListPasses[0] != null) {
                         dbHelper.ExecComandInDB(MainActivity.Database, "delete from amp_pass;");
                         while (RsListPasses[0].next()) {// пропуска
-                            dbHelper.ExecComandInDB(MainActivity.Database, "insert into amp_pass(ampp_id,ampp_INDEX,ampp_CREATE_USER_FIO,ampp_AGREED_DATE,ampp_PLACE_FROM,ampp_PLACE_TO,ampp_ATTENDANT_FIO,ampp_TRANSPORT_INFO,ampp_type_pass,ampp_PASSED_IN_DATE,ampp_PASSED_out_DATE)" +
+                            dbHelper.ExecComandInDB(MainActivity.Database, "insert into amp_pass(ampp_id,ampp_INDEX,ampp_CREATE_USER_FIO,ampp_AGREED_DATE,ampp_PLACE_FROM,ampp_PLACE_TO,ampp_ATTENDANT_FIO,ampp_TRANSPORT_INFO,ampp_type_pass,ampp_PASSED_IN_DATE,ampp_PASSED_out_DATE,ampp_PASSED_IN_CONTROL_POINT_ID,ampp_PASSED_OUT_CONTROL_POINT_ID)" +
                                     "values(" + RsListPasses[0].getString("id") + ",'" + RsListPasses[0].getString("pass_number") + "'," +
                                     "'" + RsListPasses[0].getString("pass_create_user") + "','" + RsListPasses[0].getDate("pass_date") + "'," +
                                     "'" + RsListPasses[0].getString("pass_from") + "','" + RsListPasses[0].getString("pass_to").trim() + "'," +
                                     "'" + RsListPasses[0].getString("fio_convoy") + "','" + RsListPasses[0].getString("car") + "',"
                                     + RsListPasses[0].getInt("pass_type") + ",'" + RsListPasses[0].getDate("pass_in_date") +
-                                    "','" + RsListPasses[0].getDate("pass_out_date") + "') ; ");
+                                    "','" + RsListPasses[0].getDate("pass_out_date") + "'," + RsListPasses[0].getInt("pass_watch_in") + "," + RsListPasses[0].getInt("pass_watch_out") + ") ; ");
                         }
                     }
                     if (RsListPasses[1] != null) {

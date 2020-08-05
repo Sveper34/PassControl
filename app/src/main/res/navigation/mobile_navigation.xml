@@ -17,8 +17,8 @@
             android:id="@+id/action_nav_home_to_allPassesContentFragment"
             app:destination="@id/nav_allPassesContentFragment" />
         <action
-            android:id="@+id/action_nav_home_to_nav_settingsActivity"
-            app:destination="@id/nav_settingsActivity" />
+            android:id="@+id/action_nav_home_to_settingsFragment"
+            app:destination="@id/nav_settingsFragment" />
     </fragment>
 
     <fragment
@@ -30,15 +30,23 @@
             android:id="@+id/action_nav_Content_to_nav_home"
             app:destination="@id/nav_home" />
     </fragment>
-    <activity
-        android:id="@+id/nav_settingsActivity"
-        android:name="com.example.PassControll.SettingsActivity"
-        android:label="SettingsActivity"
-        tools:layout="@layout/settings_activity" />
     <fragment
         android:id="@+id/nav_allPassesContentFragment"
         android:name="com.example.PassControll.AllPassesActivity.AllPassesContentFragment"
-        android:label="allpassesfragment_content"
-        tools:layout="@layout/allpassesfragment_content" />
+        android:label="Актуальные пропуска"
+        tools:layout="@layout/allpassesfragment_content" >
+        <action
+            android:id="@+id/action_nav_allPassesContentFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_settingsFragment"
+        android:name="com.example.PassControll.ui.Settings.SettingsFragment"
+        android:label="Настройки"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
 
 </navigation>

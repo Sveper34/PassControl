@@ -14,7 +14,7 @@
             android:title="@string/menu_content"
             android:visible="false" />
         <item
-            android:id="@+id/nav_settingsActivity"
+            android:id="@+id/nav_settingsFragment"
             android:icon="@android:drawable/ic_menu_manage"
             android:title="@string/nav_settings" />
         <item
