@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     public int FlagOpen;
     public ArrayAdapter<String> adapterWatch;
 
-    // SharedPreferences settings = getSharedPreferences("PreferencesName", MODE_PRIVATE);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,9 +166,6 @@ public class MainActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    //
-
                     synchronizationPostgresql.IpAdrressConection = ipAddr;
                     Cursor cursor = Database.rawQuery("select amp_pass.* from amp_pass ", null);
                     Object[] parameters = new Object[1];

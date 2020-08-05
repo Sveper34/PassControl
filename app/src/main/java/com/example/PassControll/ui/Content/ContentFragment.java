@@ -1,8 +1,10 @@
 package com.example.PassControll.ui.Content;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,17 +31,20 @@ public class ContentFragment extends Fragment {
 
     private ContentViewModel contentViewModel;
     private Cursor cur;
+    private String iventNumber;
     SharedPreferences preferences;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         contentViewModel =
                 ViewModelProviders.of(this).get(ContentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_content, container, false);
-        preferences=this.getActivity().getSharedPreferences("ANDROID_SYNC_WATCH", Context.MODE_PRIVATE);
+        preferences = this.getActivity().getSharedPreferences("ANDROID_SYNC_WATCH", Context.MODE_PRIVATE);
 
         return root;
     }
 
+    @SuppressLint("ResourceAsColor")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -86,6 +91,7 @@ public class ContentFragment extends Fragment {
             }
         }
         TableLayout tl = (TableLayout) getView().findViewById(R.id.TableContent);
+        TextView tv = getView().findViewById(R.id.clTitle);
         Cursor cursor = MainActivity.Database.rawQuery("Select * from amp_pass_content where amppc_PASS_ID=" + MainActivity.Idpass + ";", null);
         while (cursor.moveToNext()) {
             //Создание строк
@@ -95,15 +101,17 @@ public class ContentFragment extends Fragment {
             tvCell.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_INDEX")));
             tr.addView(tvCell);
-
             tvCell = new TextView(getActivity());
             tvCell.setTextSize(18);
+            tvCell.setMaxWidth(400);
             tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-
+            if (!cursor.getString(cursor.getColumnIndex("amppc_INVENTORY_NUMBER")).equals("null"))
+                iventNumber = "Инв №" + cursor.getString(cursor.getColumnIndex("amppc_INVENTORY_NUMBER"));
+            else
+                iventNumber = "";
             tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_TITLE")) + "(" + cursor.getString(cursor.getColumnIndex("amppc_AMOUNT")) + " "
-                    + cursor.getString(cursor.getColumnIndex("amppc_UNIT")) + ")."+"Инв №"+cursor.getString(cursor.getColumnIndex("amppc_INVENTORY_NUMBER")));
+                    + cursor.getString(cursor.getColumnIndex("amppc_UNIT")) + ")." + iventNumber);
             tr.addView(tvCell);
-
             tl.addView(tr);
         }
     }
