@@ -36,8 +36,8 @@
 
             <TextView
                 android:id="@+id/WatchListTitle"
-                android:layout_width="66dp"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/WatchListTitle"
                 android:textAlignment="viewStart"
                 android:textColor="@color/design_default_color_on_secondary"
@@ -45,8 +45,9 @@
 
             <Spinner
                 android:id="@+id/WatchList"
-                android:layout_width="235dp"
-                android:layout_height="match_parent" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown" />
         </TableRow>
     </TableLayout>
 
