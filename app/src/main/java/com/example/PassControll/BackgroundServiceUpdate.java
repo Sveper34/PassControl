@@ -3,9 +3,7 @@ package com.example.PassControll;
 import android.app.Service;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.example.PassControll.DB.ConnectionToPostgreSQL;
 import com.example.PassControll.DB.DBHelper;

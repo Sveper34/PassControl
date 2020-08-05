@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,11 +20,8 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.PassControll.DB.DBHelper;
 import com.example.PassControll.MainActivity;
 import com.example.PassControll.R;
-
-import org.w3c.dom.Text;
 
 public class ContentFragment extends Fragment {
 

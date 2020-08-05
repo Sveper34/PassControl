@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+
 import com.example.PassControll.DB.DBHelper;
 import com.example.PassControll.MainActivity;
 import com.example.PassControll.R;
