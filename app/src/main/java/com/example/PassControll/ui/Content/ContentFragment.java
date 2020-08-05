@@ -99,16 +99,9 @@ public class ContentFragment extends Fragment {
             tvCell = new TextView(getActivity());
             tvCell.setTextSize(18);
             tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_TITLE")) + "(" + cursor.getString(cursor.getColumnIndex("amppc_AMOUNT")) + " " + cursor.getString(cursor.getColumnIndex("amppc_UNIT")) + ").");
-            tr.addView(tvCell);
 
-            tvCell = new TextView(getActivity());
-            tvCell.setTextSize(18);
-            tvCell.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                tvCell.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
-            }
-            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_INVENTORY_NUMBER")));
+            tvCell.setText(cursor.getString(cursor.getColumnIndex("amppc_TITLE")) + "(" + cursor.getString(cursor.getColumnIndex("amppc_AMOUNT")) + " "
+                    + cursor.getString(cursor.getColumnIndex("amppc_UNIT")) + ")."+"Инв №"+cursor.getString(cursor.getColumnIndex("amppc_INVENTORY_NUMBER")));
             tr.addView(tvCell);
 
             tl.addView(tr);

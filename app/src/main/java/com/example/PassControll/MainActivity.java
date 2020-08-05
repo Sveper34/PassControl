@@ -119,9 +119,12 @@ public class MainActivity extends AppCompatActivity {
                         NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length() - cursor.getString(cursor.getColumnIndex("ampp_ATTENDANT_FIO")).length(), NewUnderLineString.length(), 0);
                         tvAttendant.setText(NewUnderLineString);
                         //формирование автомобиль
-                        NewUnderLineString = new SpannableString("Автомобиль: " + cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")));
-                        NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length() - cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")).length(), NewUnderLineString.length(), 0);
-                        tvcar.setText(NewUnderLineString);
+                        if (!cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")).equals("null")) {
+                            NewUnderLineString = new SpannableString("Автомобиль: " + cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")));
+                            NewUnderLineString.setSpan(new UnderlineSpan(), NewUnderLineString.length() - cursor.getString(cursor.getColumnIndex("ampp_TRANSPORT_INFO")).length(), NewUnderLineString.length(), 0);
+                            tvcar.setText(NewUnderLineString);
+                        }
+                        else tvcar.setText("");
 
                         btContent.setVisibility(View.VISIBLE);
                         Idpass = cursor.getInt(cursor.getColumnIndex("ampp_id"));

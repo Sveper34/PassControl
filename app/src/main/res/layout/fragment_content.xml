@@ -16,47 +16,39 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <HorizontalScrollView
-                android:id="@+id/hscroll"
-                android:layout_width="match_parent"
+            <TableLayout
+                android:id="@+id/TableContent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent">
 
-                <TableLayout
-                    android:id="@+id/TableContent"
+                <TableRow
+                    android:id="@+id/trHead"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent">
 
-                    <TableRow
-                        android:id="@+id/trHead"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/clIndex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/ampp_number" />
 
-                        <TextView
-                            android:id="@+id/clIndex"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:text="@string/ampp_number" />
+                    <TextView
+                        android:id="@+id/clTitle"
+                        android:layout_width="195dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:singleLine="false"
+                        android:text="@string/AMPP_titlle"
+                        android:textAlignment="center" />
 
-                        <TextView
-                            android:id="@+id/clTitle"
-                            android:layout_width="274dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:text="@string/AMPP_titlle" />
-
-                        <TextView
-                            android:id="@+id/clInvetiruNumber"
-                            android:layout_width="85dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/InventoryNumberText" />
-
-                    </TableRow>
-
-                </TableLayout>
-            </HorizontalScrollView>
+                </TableRow>
+            </TableLayout>
 
         </LinearLayout>
     </ScrollView>
