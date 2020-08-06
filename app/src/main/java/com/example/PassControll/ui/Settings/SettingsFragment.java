@@ -29,7 +29,7 @@ public class SettingsFragment extends Fragment {
     SharedPreferences settings;
     String[] listWatch;
     String[] listWatchid;
-    int curpositionWatch;
+    int curpositionWatch=0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class SettingsFragment extends Fragment {
         listWatch = new String[cuWatchList.getCount()];
         listWatchid = new String[cuWatchList.getCount()];
         int i = 0;
-
+        curpositionWatch=0;
         while (cuWatchList.moveToNext()) {
             if(ActualPreferenceSync==cuWatchList.getInt(cuWatchList.getColumnIndex("ampw_ID")))
             curpositionWatch=i;
