@@ -52,7 +52,7 @@ public class ConnectionToPostgreSQL extends AsyncTask {
             stmtListPassesContent = con.createStatement();
             stmtWatch = con.createStatement();
             RsListPasses = stmtListPasses.executeQuery("select amp.list_passes.*,amp.v_user_list.name_last||' '||amp.v_user_list.name_first ||' '||amp.v_user_list.name_middle as fio_convoy\n" +
-                    "                , amp.manual_car.mark||','||amp.manual_car.color||','||amp.manual_car.state_number as car \n" +
+                    "                , amp.manual_car.mark||' '||amp.manual_car.model||' ('||amp.manual_car.state_number||')' as car \n" +
                     "                    from amp.list_passes " +
                     "                    left join amp.v_user_list on amp.v_user_list.id=amp.list_passes.pass_convoy \n" +
                     "                    left join amp.manual_car on amp.manual_car.id=amp.list_passes.manual_car_id where  amp.list_passes.pass_accept=true \n" +

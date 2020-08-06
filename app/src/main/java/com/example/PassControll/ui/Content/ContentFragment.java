@@ -67,14 +67,7 @@ public class ContentFragment extends Fragment {
                 btImport.setVisibility(View.INVISIBLE);
             }
             if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_type_pass")) == 2) {//вынос внос
-                if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_IN_CONTROL_POINT_ID")) <= 0) {
-                    if (!getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")).equals("null"))
-                        btImport.setText("Ввоз ТМЦ");
-                    else
-                        btImport.setText("Внос ТМЦ");
-                    btImport.setVisibility(View.VISIBLE);
-                    btExport.setVisibility(View.INVISIBLE);
-                } else {
+                if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID")) <= 0) {
                     if (getInfoButton.getInt(getInfoButton.getColumnIndex("ampp_PASSED_OUT_CONTROL_POINT_ID")) <= 0) {
                         if (!getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")).equals("null"))
                             btExport.setText("Вывоз ТМЦ");
@@ -82,8 +75,14 @@ public class ContentFragment extends Fragment {
                         btImport.setVisibility(View.INVISIBLE);
                         btExport.setVisibility(View.VISIBLE);
                     }
+                } else {
+                    if (!getInfoButton.getString(getInfoButton.getColumnIndex("ampp_TRANSPORT_INFO")).equals("null"))
+                        btImport.setText("Ввоз ТМЦ");
+                    else
+                        btImport.setText("Внос ТМЦ");
+                    btImport.setVisibility(View.VISIBLE);
+                    btExport.setVisibility(View.INVISIBLE);
                 }
-
             }
         }
         getInfoButton.close();
@@ -102,7 +101,7 @@ public class ContentFragment extends Fragment {
             tvCell.setTextSize(18);
             tvCell.setMaxWidth(400);
             tvCell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            if (!cursor.getString(cursor.getColumnIndex("amppc_INVENTORY_NUMBER")).equals("null"))
+            if (!cursor.getString(cursor.getColumnIndex("amppc_INVENTORY_NUMBER")).trim().equals("null"))
                 iventNumber = "Инв №" + cursor.getString(cursor.getColumnIndex("amppc_INVENTORY_NUMBER"));
             else
                 iventNumber = "";
